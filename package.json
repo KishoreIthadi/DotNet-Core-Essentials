@@ -1,0 +1,52 @@
+{
+    "name": "dotnet-template-generator",
+    "displayName": "Dotnet Template Generator",
+    "description": "Visual studio code extension for creating different dotnet project templates.",
+    "version": "0.0.1",
+    "publisher": "KishoreIthadi",
+    "engines": {
+        "vscode": "^1.18.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.createTemplate",
+        "onCommand:extension.addReference",
+        "onCommand:extension.publish"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.createTemplate",
+                "title": "DotNetGen: New Project"
+            },
+            {
+                "command": "extension.addReference",
+                "title": "DotNetGen: Add Reference"
+            },
+            {
+                "command": "extension.publish",
+                "title": "DotNetGen: Publish"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "dependencies": {
+        "fs-extra": "^4.0.2",
+        "xml-mapping": "^1.7.1"
+    },
+    "devDependencies": {
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0",
+        "mocha": "^2.3.3",
+        "@types/node": "^6.0.40",
+        "@types/mocha": "^2.2.32"
+    }
+}
