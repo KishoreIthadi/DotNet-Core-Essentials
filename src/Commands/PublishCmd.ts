@@ -25,38 +25,22 @@ export class PublishCmd {
 
     public ExecutePublishCmd(): void {
 
-        try {
-            // checking workspace is empty or not
-            if (vscode.workspace.workspaceFolders.length > 0) {
-                // checking for dotnet cli is installed 
-                if (ValidationUtility.CheckDotnetCli()) {
-                    let rootFolders = ValidationUtility.SelectRootPath();
-                    // select the workspace folder.
-                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                        .then(response => {
-                            if (typeof response != StringUtility.Undefined) {
-                                let rootPath = rootFolders.get(response);
-                                PublishCmd.GetProjectPath(rootPath);
-                            }
-                        })
-
-                }
-                // dotnet cli is not installed
-                else {
-                    MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.CliNotFound, []);
-                }
-            }
-            // workspace is empty
-            else {
-                MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, []);
-            }
-        }
-        catch {
-            MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, [])
+        if (ValidationUtility.WorkspaceValidation()) {
+            let rootFolders = ValidationUtility.SelectRootPath();
+            // Select the workspace folder.
+            QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                .then(response => {
+                    if (typeof response != StringUtility.Undefined) {
+                        let rootPath = rootFolders.get(response);
+                        PublishCmd.GetProjectPath(rootPath);
+                    }
+                })
         }
     }
 
-    // Get Project Path
+    /**
+     *  Get Project Path
+     */
     public static GetProjectPath(rootPath) {
         let csprojNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
             FileTypeEnum.Csproj, new Map<string, string>());
@@ -66,7 +50,7 @@ export class PublishCmd {
                 .then(csprojName => {
                     if (typeof csprojName != StringUtility.Undefined) {
                         let projectPath: string = csprojNameNPathList.get(csprojName);
-                        // Check Whether the project selected is csproj or not
+                        // Check Whether the project selected is csproj or not.
                         if (ValidationUtility.CheckCliVersion(projectPath)) {
                             let csprojJsonObj: any = XMLMapping.load(fs.readFileSync(projectPath + '\\' + csprojName).toString());
                             ValidationUtility.ValidateProjectType(csprojJsonObj)
@@ -99,7 +83,7 @@ export class PublishCmd {
                                     // Publishes a project.
                                     let publisher: any = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
                                         ['publish', csprojName, '-o', fileUri[0].fsPath + '\\PublishOutput'], projectPath);
-                                    
+
                                     if (publisher.stdout.includes('error')) {
                                         MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.Error, [UserOptionsEnum.ShowOutput])
                                             .then(response => {
@@ -112,17 +96,17 @@ export class PublishCmd {
                                     // Showing the output that the operation is successful.
                                     else {
                                         MessageUtility.ShowMessage(MessageTypeEnum.Info,
-                                            `Published successfully at ${fileUri[0].fsPath}`, []);
+                                            StringUtility.FormatString(StringUtility.PublishSuccess, [fileUri[0].fsPath]), []);
                                     }
                                 }
-                                // Error when the selected folder has the same folder name already exists.
+                                // Error when selected folder has same existing folder name.
                                 else {
                                     MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.PublishExists, []);
                                 }
                             }
-                            // Error,If the path is not selected in the file explorere window 
+                            // Error,if the path is not selected in the file explorer window. g
                             else {
-                                MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.UnspecifiedFilePath, [])
+                                MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.UnspecifiedFilePath, []);
                             }
                         });
                 }

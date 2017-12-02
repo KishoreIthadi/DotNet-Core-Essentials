@@ -11,10 +11,10 @@ import { QuickPickUtility } from '../Utilities/QuickPickUtility';
 import { StringUtility } from '../Utilities/StringUtility';
 import { ValidationUtility } from '../Utilities/ValidationUtility';
 
-import { AppTypeEnum } from '../Enums/AppTypeEnum';
 import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { FrameworkTypeEnum } from '../Enums/FrameworkTypeEnum';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
+import { ProjectTypeEnum } from '../Enums/ProjectTypeEnum';
 
 import { DataSource } from '../DataSource';
 import { GenerateCmdDTO } from '../DTO/GenerateCmdDTO';
@@ -24,36 +24,18 @@ export class GenerateCmd {
     constructor() {
     }
 
-    public ConfirmCreationPath() {
-
-        try {
-            // checking workspace is empty or not
-            if (vscode.workspace.workspaceFolders.length > 0) {
-                // checking for dotnet cli is installed 
-                if (ValidationUtility.CheckDotnetCli()) {
-                    let rootFolders = ValidationUtility.SelectRootPath();
-                    // select the workspace folder.
-                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                        .then(response => {
-                            if (typeof response != StringUtility.Undefined) {
-                                let GenerateCmdObj: GenerateCmdDTO = new GenerateCmdDTO();
-                                GenerateCmdObj.RootPath = rootFolders.get(response);
-                                GenerateCmd.SelectFramework(GenerateCmdObj);
-                            }
-                        })
-                }
-                // dotnet cli is not installed
-                else {
-                    MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.CliNotFound, []);
-                }
-            }
-            // workspace is empty
-            else {
-                MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, []);
-            }
-        }
-        catch {
-            MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, [])
+    public ExecuteGenerateCmd() {
+        if (ValidationUtility.WorkspaceValidation()) {
+            let rootFolders = ValidationUtility.SelectRootPath();
+            // Select the workspace folder.
+            QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                .then(response => {
+                    if (typeof response != StringUtility.Undefined) {
+                        let GenerateCmdObj: GenerateCmdDTO = new GenerateCmdDTO();
+                        GenerateCmdObj.RootPath = rootFolders.get(response);
+                        GenerateCmd.SelectFramework(GenerateCmdObj);
+                    }
+                });
         }
     }
 
@@ -79,7 +61,7 @@ export class GenerateCmd {
                 if (typeof fwVersion != StringUtility.Undefined) {
                     GenerateCmdObj.Version = versionsMap.get(fwVersion);
                     if (GenerateCmdObj.FrameWork == FrameworkTypeEnum.NetStandard) {
-                        GenerateCmdObj.AppType = AppTypeEnum.Classlib;
+                        GenerateCmdObj.AppType = ProjectTypeEnum.Classlib;
                         GenerateCmd.SlnFinder(GenerateCmdObj);
                     }
                     else {
@@ -166,7 +148,7 @@ export class GenerateCmd {
                     else {
                         MessageUtility.ShowMessage(MessageTypeEnum.Warning, StringUtility.InvalidSolutionName, [])
                             .then(() => {
-                                // ask for sln name if previous one is invalid
+                                // Ask for sln name if previous one is invalid.
                                 GenerateCmd.ReadSlnName(GenerateCmdObj);
                             });
                     }
@@ -199,7 +181,7 @@ export class GenerateCmd {
                         else {
                             MessageUtility.ShowMessage(MessageTypeEnum.Warning, StringUtility.InvalidProjectName, [])
                                 .then(() => {
-                                    // asks for app name if previous is invalid
+                                    // Asks for app name if previous is invalid.
                                     GenerateCmd.ReadAppName(GenerateCmdObj);
                                 });
                         }

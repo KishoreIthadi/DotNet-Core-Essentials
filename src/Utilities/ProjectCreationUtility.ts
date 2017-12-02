@@ -8,9 +8,12 @@ import { MessageUtility } from './MessageUtility';
 import { StringUtility } from './StringUtility';
 
 import { CLITypeEnum } from '../Enums/CLITypeEnum';
+import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { FrameworkTypeEnum } from '../Enums/FrameworkTypeEnum';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
+import { ProjectTypeEnum } from '../Enums/ProjectTypeEnum';
 
+import { DataSource } from '../DataSource';
 import { GenerateCmdDTO } from '../DTO/GenerateCmdDTO';
 
 export class ProjectCreationUtility {
@@ -35,7 +38,7 @@ export class ProjectCreationUtility {
         }
 
         // Creating class library for dotnet core framework.
-        if (GenerateCmdObj.FrameWork == FrameworkTypeEnum.NetCore && GenerateCmdObj.AppType == 'Classlib') {
+        if (GenerateCmdObj.FrameWork == FrameworkTypeEnum.NetCore && GenerateCmdObj.AppType == ProjectTypeEnum.Classlib) {
             ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
                 ['new', GenerateCmdObj.AppType, '-o', GenerateCmdObj.AppName, '-f', GenerateCmdObj.Version],
                 GenerateCmdObj.SolutionPath);
@@ -46,13 +49,16 @@ export class ProjectCreationUtility {
                 ['new', GenerateCmdObj.AppType, '-o', GenerateCmdObj.AppName], GenerateCmdObj.SolutionPath);
         }
 
-        let filepath: string = GenerateCmdObj.ProjectPath + '\\' + GenerateCmdObj.AppName + '.csproj';
+        let filepath: string = GenerateCmdObj.ProjectPath + '\\' + GenerateCmdObj.AppName + FileTypeEnum.Csproj;
 
         // Adding csproj to solution.
         var ref = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
             ['sln', GenerateCmdObj.SlnName, 'add', filepath], GenerateCmdObj.SolutionPath);
 
-        MessageUtility.ShowMessage(MessageTypeEnum.Info, `${GenerateCmdObj.AppName} created successfully`, []);
+        if (DataSource._npmReqList.indexOf(GenerateCmdObj.AppType) > -1) {
+            MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.RunNpm, []);
+        }
+        MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.FormatString(StringUtility.ProjectCreationSuccess, [GenerateCmdObj.AppName]), []);
 
         ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
             ['clean'], GenerateCmdObj.ProjectPath);
