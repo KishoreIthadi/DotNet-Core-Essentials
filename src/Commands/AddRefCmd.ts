@@ -22,6 +22,7 @@ import { DataSource } from '../DataSource';
 
 import * as fs_extra from 'fs-extra';
 import * as XMLMapping from 'xml-mapping';
+import * as path from 'path';
 
 export class AddRefCmd {
 
@@ -29,47 +30,30 @@ export class AddRefCmd {
     }
 
     public ExecuteAddRefCmd(): void {
-        try {
-            // checking workspace is empty or not
-            if (vscode.workspace.workspaceFolders.length > 0) {
-                // checking for dotnet cli is installed 
-                if (ValidationUtility.CheckDotnetCli()) {
-                    let rootFolders = ValidationUtility.SelectRootPath();
-                    // select the workspace folder.
-                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                        .then(response => {
-                            if (typeof response != StringUtility.Undefined) {
-                                let referenceDTO: AddReferenceDTO = new AddReferenceDTO();
-                                referenceDTO.Path = rootFolders.get(response);
-                                // Lists reference types.
-                                QuickPickUtility.ShowQuickPick(DataSource._referenceTypeList, StringUtility.SelectRefType)
-                                    .then(selectedReferenceType => {
-                                        if (typeof selectedReferenceType != StringUtility.Undefined) {
+        if (ValidationUtility.WorkspaceValidation()) {
+            let rootFolders = ValidationUtility.SelectRootPath();
+            // Select the workspace folder.
+            QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                .then(response => {
+                    if (typeof response != StringUtility.Undefined) {
+                        let referenceDTO: AddReferenceDTO = new AddReferenceDTO();
+                        referenceDTO.Path = rootFolders.get(response);
+                        // Lists reference types.
+                        QuickPickUtility.ShowQuickPick(DataSource._referenceTypeList, StringUtility.SelectRefType)
+                            .then(selectedReferenceType => {
+                                if (typeof selectedReferenceType != StringUtility.Undefined) {
 
-                                            selectedReferenceType == DataSource._referenceTypeList[0]
-                                                ? referenceDTO.FileType = FileTypeEnum.Csproj
-                                                : referenceDTO.FileType = FileTypeEnum.Dll;
+                                    selectedReferenceType == DataSource._referenceTypeList[0]
+                                        ? referenceDTO.FileType = FileTypeEnum.Csproj
+                                        : referenceDTO.FileType = FileTypeEnum.Dll;
 
-                                            referenceDTO.FileType == FileTypeEnum.Csproj
-                                                ? AddRefCmd.SolutionSelecter(referenceDTO)
-                                                : AddRefCmd.GetPaths(referenceDTO);
-                                        }
-                                    });
-                            }
-                        })
-                }
-                // dotnet cli is not installed.
-                else {
-                    MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.CliNotFound, [])
-                }
-            }
-            // Workspace is empty.
-            else {
-                MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, [])
-            }
-        }
-        catch {
-            MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, [])
+                                    referenceDTO.FileType == FileTypeEnum.Csproj
+                                        ? AddRefCmd.SolutionSelecter(referenceDTO)
+                                        : AddRefCmd.GetPaths(referenceDTO);
+                                }
+                            });
+                    }
+                })
         }
     }
 
@@ -116,8 +100,8 @@ export class AddRefCmd {
 
                         referenceDTO.SourcePath = sourcecsprojList.get(sourceCSprojName) + '\\' + sourceCSprojName;
                         referenceDTO.CSProjName = sourceCSprojName.substring(0, sourceCSprojName.lastIndexOf('.'));
-                        // Check whether the project is valid project or not
-                        let SourceCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.SourcePath).toString());
+                        // Check whether the project is valid project or not.
+                        let SourceCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.SourcePath).toString(), { comments: false });
                         if (ValidationUtility.ValidateProjectType(SourceCsprojJsonObj)) {
                             // Checking for dotnet 2.x cli version.
                             if (ValidationUtility.CheckCliVersion(sourcecsprojList.get(sourceCSprojName))) {
@@ -141,9 +125,9 @@ export class AddRefCmd {
                                             if (fileName != UserOptionsEnum.Browse) {
                                                 referenceDTO.DestinationPath = destcsprojList.get(fileName) + '\\' + fileName;
                                                 referenceDTO.DLLName = fileName.substring(0, fileName.lastIndexOf('.'));
-                                                // Check Whether the project selected is csproj or not
+                                                // Check Whether the project selected is csproj or not.
                                                 let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
-                                                ValidationUtility.ValidateProjectType(DestCsprojJsonObj)
+                                                ValidationUtility.ValidateProjectType(DestCsprojJsonObj) || (referenceDTO.FileType == FileTypeEnum.Dll)
                                                     ? referenceDTO.FileType == FileTypeEnum.Csproj
                                                         ? AddRefCmd.AddProjectReference(referenceDTO)
                                                         : AddRefCmd.AddAssemblyReference(referenceDTO)
@@ -151,7 +135,7 @@ export class AddRefCmd {
                                             }
                                             else {
                                                 referenceDTO.FileType == FileTypeEnum.Csproj
-                                                    ? AddRefCmd.CopyProject(referenceDTO)
+                                                    ? AddRefCmd.BrowseProject(referenceDTO)
                                                     : AddRefCmd.BrowseDllPath(referenceDTO);
                                             }
                                         }
@@ -162,7 +146,7 @@ export class AddRefCmd {
                                 MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.CliVersionError, []);
                             }
                         }
-                        // Error if the project selected is not the valid project
+                        // Error if the project selected is not the valid project.
                         else {
                             MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, [])
                         }
@@ -179,44 +163,35 @@ export class AddRefCmd {
     /**
     * Copy Project to current working folder if doesn't exist.
     */
-    public static CopyProject(referenceDTO) {
-        // Warning the user the operation cause copying the  the folder to the current solution path.
-        MessageUtility.ShowMessage(MessageTypeEnum.Warning, StringUtility.AddProjRefCopyWarning,
-            [UserOptionsEnum.Yes])
-            .then(response => {
-                if (response == UserOptionsEnum.Yes) {
-                    // Opening file explorer to select the project.
-                    FileExplorerUtility.OpenFile(DataSource._filterCsproj)
-                        .then(referalFileUri => {
-                            if (typeof referalFileUri != StringUtility.Undefined) {
-                                referenceDTO.DestinationPath = referalFileUri[0].fsPath;
-                                // Check Whether the project selected is csproj or not
-                                let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
-                                if (ValidationUtility.ValidateProjectType(DestCsprojJsonObj)) {
-                                    let copyPath: string = referalFileUri[0].fsPath
-                                        .substring(0, referalFileUri[0].fsPath.lastIndexOf('\\'));
+    public static BrowseProject(referenceDTO) {
 
-                                    // Circular Dependency check.
-                                    if (AddRefCmd.CircularDependencyCheck(referenceDTO)) {
-                                        MessageUtility.ShowMessage(MessageTypeEnum.Error,
-                                            StringUtility.CircularDepError, []);
-                                    }
-                                    // Copy project folder to current root folder if no circular dependency exists.
-                                    else {
-                                        fs_extra.copySync(copyPath, referenceDTO.Path + '\\' + copyPath.substring(copyPath.lastIndexOf('\\') + 1));
-                                        AddRefCmd.AddProjectReference(referenceDTO);
-                                    }
-                                }
-                                // Error if the project selected is not the valid project.
-                                else {
-                                    MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, [])
-                                }
-                            }
-                            // Error if the file is not selected when the windows explorer is opened.
-                            else {
-                                MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.UnspecifiedFilePath, []);
-                            }
-                        });
+        // Opening file explorer to select the project.
+        FileExplorerUtility.OpenFile(DataSource._filterCsproj)
+            .then(referalFileUri => {
+                if (typeof referalFileUri != StringUtility.Undefined) {
+                    referenceDTO.DestinationPath = referalFileUri[0].fsPath;
+                    // Check Whether the project selected is csproj or not.
+                    let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
+                    if (ValidationUtility.ValidateProjectType(DestCsprojJsonObj)) {
+
+                        // Circular Dependency check.
+                        if (AddRefCmd.CircularDependencyCheck(referenceDTO)) {
+                            MessageUtility.ShowMessage(MessageTypeEnum.Error,
+                                StringUtility.CircularDepError, []);
+                        }
+                        // Copy project folder to current root folder if no circular dependency exists.
+                        else {
+                            AddRefCmd.AddProjectReference(referenceDTO);
+                        }
+                    }
+                    // Error if the project selected is not the valid project.
+                    else {
+                        MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, [])
+                    }
+                }
+                // Error if the file is not selected when the windows explorer is opened.
+                else {
+                    MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.UnspecifiedFilePath, []);
                 }
             });
     }
@@ -252,7 +227,7 @@ export class AddRefCmd {
         }
         // Showing the info bar after the reference is successfully added.
         else {
-            MessageUtility.ShowMessage(MessageTypeEnum.Info, addReference.stdout.toString(), []);
+            MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.DTG + addReference.stdout.toString(), []);
         }
     }
 
@@ -291,13 +266,14 @@ export class AddRefCmd {
         }
         else {
             // Reading source csproj file and converting it to json object.
-            let jsonData: any = XMLMapping.load(fs.readFileSync(referenceDTO.SourcePath).toString());
+            let jsonData: any = XMLMapping.load(fs.readFileSync(referenceDTO.SourcePath).toString(), { comments: false });
 
+            let relative = path.relative(referenceDTO.SourcePath.substring(0, referenceDTO.SourcePath.lastIndexOf('\\')).replace(/\\/g, '/'), referenceDTO.DestinationPath.replace(/\\/g, '/'));
             // Getting JsonObjects. 
             let referenceJsonObj: any = DataSource.GetJsonObject(referenceDTO.DLLName
-                .substring(0, referenceDTO.DLLName.lastIndexOf('.')), referenceDTO.DestinationPath, true);
+                .substring(0, referenceDTO.DLLName.lastIndexOf('.')), relative, true);
             let itemGroupJsonObj: any = DataSource.GetJsonObject(referenceDTO.DLLName
-                .substring(0, referenceDTO.DLLName.lastIndexOf('.')), referenceDTO.DestinationPath, false);
+                .substring(0, referenceDTO.DLLName.lastIndexOf('.')), relative, false);
 
             // Finding whether the itemgroup tag is present or not. If not present create the item group and reference tags.
             if (jsonData.Project.ItemGroup == null) {
@@ -311,19 +287,15 @@ export class AddRefCmd {
                 jsonObjArr.push(itemGroupJsonObj);
                 jsonData.Project['ItemGroup'] = jsonObjArr;
             }
-            // If the itemgroup is an array then push the reference to the array.
+            // If itemgroup is an array then push the reference to the array.
             else {
                 let index: number = jsonData.Project.ItemGroup.length;
                 jsonData.Project.ItemGroup[index] = itemGroupJsonObj;
             }
             // Converting json data to xml.
-            let xmlData: any = XMLMapping.dump(jsonData);
-            // Formatting the data i.e indentation.
-            xmlData = StringUtility.FormatXML(xmlData, '\t');
+            let xmlData: any = XMLMapping.dump(jsonData, { indent: true });
             // Open the csproj file in write mode.
-            let file: any = fs.openSync(referenceDTO.SourcePath, 'r+');
-            fs.writeSync(file, new Buffer(xmlData));
-            fs.close(file);
+            fs.writeFileSync(referenceDTO.SourcePath, xmlData)
             MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.DllRefSuccess, []);
         }
     }
