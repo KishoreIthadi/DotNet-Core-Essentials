@@ -7,6 +7,7 @@ import { MessageUtility } from './MessageUtility';
 
 import { CLITypeEnum } from '../Enums/CLITypeEnum';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
+import { ProjectTypeEnum } from '../Enums/ProjectTypeEnum';
 
 import { DataSource } from '../DataSource';
 
@@ -48,21 +49,76 @@ export class ValidationUtility {
         try {
             if (jsonObj.Project.PropertyGroup instanceof Array) {
                 for (let i = 0; i < jsonObj.Project.PropertyGroup.length; i++) {
-                    if (jsonObj.Project.PropertyGroup[i].TargetFramework['$t'].includes('core') ||
-                        jsonObj.Project.PropertyGroup.TargetFramework['$t'].includes('standard')) {
-                        return true;
+                    if (jsonObj.Project.PropertyGroup[i].TargetFramework != null) {
+                        if (jsonObj.Project.PropertyGroup[i].TargetFramework['$t'].includes(StringUtility.Core) ||
+                            jsonObj.Project.PropertyGroup[i].TargetFramework['$t'].includes(StringUtility.Standard)) {
+                            return true;
+                        }
                     }
                 }
                 return false;
             }
             else if (jsonObj.Project.PropertyGroup.TargetFramework != null) {
-                return jsonObj.Project.PropertyGroup.TargetFramework['$t'].includes('core')
-                    || jsonObj.Project.PropertyGroup.TargetFramework['$t'].includes('standard');
+                return jsonObj.Project.PropertyGroup.TargetFramework['$t'].includes(StringUtility.Core)
+                    || jsonObj.Project.PropertyGroup.TargetFramework['$t'].includes(StringUtility.Standard);
             }
             return false;
-
         }
-        catch{
+        catch {
+            return false;
+        }
+    }
+
+    // Return the type of application to make it as a start up project.
+    public static GetProjectType(jsonObj) {
+        try {
+            if (jsonObj.Project[StringUtility.SDK] == ProjectTypeEnum.WebApp) {
+                return ProjectTypeEnum.WebApp;
+            }
+            else if (jsonObj.Project[StringUtility.SDK] == ProjectTypeEnum.ProjectSDK) {
+                if (jsonObj.Project.PropertyGroup instanceof Array) {
+                    for (let i = 0; i < jsonObj.Project.PropertyGroup.length; i++) {
+                        if (jsonObj.Project.PropertyGroup[i].OutputType['$t'] != null) {
+                            return jsonObj.Project.PropertyGroup[i].OutputType['$t'];
+                        }
+                    }
+                    return undefined;
+                }
+                else if (jsonObj.Project.PropertyGroup.OutputType['$t'] != null) {
+                    return jsonObj.Project.PropertyGroup.OutputType['$t'];
+                }
+
+                return undefined;
+
+            }
+        }
+        catch {
+            return undefined;
+        }
+
+    }
+
+    public static WorkspaceValidation() {
+        try {
+            // Checking workspace is empty or not.
+            if (vscode.workspace.workspaceFolders.length > 0) {
+                // Checking whether dotnet cli is installed.
+                if (ValidationUtility.CheckDotnetCli()) {
+                    return true
+                }
+                // If dotnet cli is not installed.
+                else {
+                    MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.CliNotFound, []);
+                    return false;
+                }
+            }
+
+            // Workspace is empty.sa
+            MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, []);
+            return false;
+        }
+        catch {
+            MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, [])
             return false;
         }
     }
