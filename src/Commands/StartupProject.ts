@@ -13,18 +13,24 @@ import { ProjectTypeEnum } from '../Enums/ProjectTypeEnum';
 
 
 export class StartUpProject {
-    
-    public ExecuteStartupCmd() {
+
+    public ExecuteStartupCmd(args) {
         if (ValidationUtility.WorkspaceValidation()) {
             let rootFolders = ValidationUtility.SelectRootPath();
-            // Select workspace folder.
-            QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                .then(response => {
-                    if (typeof response != StringUtility.Undefined) {
-                        let rootPath = rootFolders.get(response);
-                        StartUpProject.SetSatrtup(rootPath);
-                    }
-                });
+            if (rootFolders.size > 1) {
+                // Select workspace folder.
+                QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                    .then(response => {
+                        if (typeof response != StringUtility.Undefined) {
+                            let rootPath = rootFolders.get(response);
+                            StartUpProject.SetSatrtup(rootPath);
+                        }
+                    });
+            }
+            else {
+                let rootPath = rootFolders.values().next().value;
+                StartUpProject.SetSatrtup(rootPath);
+            }
         }
     }
 
@@ -32,7 +38,7 @@ export class StartUpProject {
         // Get the list of projects under given path.
         let csprojList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
             FileTypeEnum.Csproj, new Map<string, string>());
-            
+
         if (csprojList.size > 0) {
             // Display .csproj files under selected path.
             QuickPickUtility.ShowQuickPick(Array.from(csprojList.keys()),

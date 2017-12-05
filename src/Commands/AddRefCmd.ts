@@ -32,29 +32,38 @@ export class AddRefCmd {
     public ExecuteAddRefCmd(): void {
         if (ValidationUtility.WorkspaceValidation()) {
             let rootFolders = ValidationUtility.SelectRootPath();
-            // Select the workspace folder.
-            QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                .then(response => {
-                    if (typeof response != StringUtility.Undefined) {
-                        let referenceDTO: AddReferenceDTO = new AddReferenceDTO();
-                        referenceDTO.Path = rootFolders.get(response);
-                        // Lists reference types.
-                        QuickPickUtility.ShowQuickPick(DataSource._referenceTypeList, StringUtility.SelectRefType)
-                            .then(selectedReferenceType => {
-                                if (typeof selectedReferenceType != StringUtility.Undefined) {
-
-                                    selectedReferenceType == DataSource._referenceTypeList[0]
-                                        ? referenceDTO.FileType = FileTypeEnum.Csproj
-                                        : referenceDTO.FileType = FileTypeEnum.Dll;
-
-                                    referenceDTO.FileType == FileTypeEnum.Csproj
-                                        ? AddRefCmd.SolutionSelecter(referenceDTO)
-                                        : AddRefCmd.GetPaths(referenceDTO);
-                                }
-                            });
-                    }
-                })
+            let referenceDTO: AddReferenceDTO = new AddReferenceDTO();
+            if (rootFolders.size > 1) {
+                // Select the workspace folder.
+                QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                    .then(response => {
+                        if (typeof response != StringUtility.Undefined) {
+                            referenceDTO.Path = rootFolders.get(response);
+                            AddRefCmd.SelectReferenceType(referenceDTO);
+                        }
+                    });
+            }
+            else {
+                referenceDTO.Path = rootFolders.values().next().value;
+                AddRefCmd.SelectReferenceType(referenceDTO);
+            }
         }
+    }
+    // Lists reference types.
+    public static SelectReferenceType(referenceDTO) {
+        QuickPickUtility.ShowQuickPick(DataSource.GetReferenceTypes(), StringUtility.SelectRefType)
+            .then(selectedReferenceType => {
+                if (typeof selectedReferenceType != StringUtility.Undefined) {
+
+                    selectedReferenceType == DataSource.GetReferenceTypes()[0]
+                        ? referenceDTO.FileType = FileTypeEnum.Csproj
+                        : referenceDTO.FileType = FileTypeEnum.Dll;
+
+                    referenceDTO.FileType == FileTypeEnum.Csproj
+                        ? AddRefCmd.SolutionSelecter(referenceDTO)
+                        : AddRefCmd.GetPaths(referenceDTO);
+                }
+            });
     }
 
     /**
@@ -105,41 +114,48 @@ export class AddRefCmd {
                         if (ValidationUtility.ValidateProjectType(SourceCsprojJsonObj)) {
                             // Checking for dotnet 2.x cli version.
                             if (ValidationUtility.CheckCliVersion(sourcecsprojList.get(sourceCSprojName))) {
-                                // Get the list of projects under the given path.
-                                let destcsprojList: Map<string, string> = FileUtility.GetFilesbyExtension(referenceDTO.Path,
-                                    referenceDTO.FileType, new Map<string, string>());
+                                if (referenceDTO.FileType != FileTypeEnum.Dll) {
+                                    // Get the list of projects under the given path.
+                                    let destcsprojList: Map<string, string> = FileUtility.GetFilesbyExtension(referenceDTO.Path,
+                                        referenceDTO.FileType, new Map<string, string>());
 
-                                // Adding browse option to the list.
-                                destcsprojList.set(UserOptionsEnum.Browse, UserOptionsEnum.Browse);
+                                    // Adding browse option to the list.
+                                    destcsprojList.set(UserOptionsEnum.Browse, UserOptionsEnum.Browse);
 
-                                // Removing the selected source project name to avoid circular dependency.
-                                if (referenceDTO.FileType == FileTypeEnum.Csproj) {
-                                    destcsprojList.delete(sourceCSprojName);
+                                    // Removing the selected source project name to avoid circular dependency.
+                                    if (referenceDTO.FileType == FileTypeEnum.Csproj) {
+                                        destcsprojList.delete(sourceCSprojName);
+                                    }
+
+                                    QuickPickUtility.ShowQuickPick(Array.from(destcsprojList.keys()),
+                                        StringUtility.SelectDestinationCsproj)
+                                        .then(fileName => {
+                                            if (typeof fileName != StringUtility.Undefined) {
+                                                // Check if Browse option is selected.
+                                                if (fileName != UserOptionsEnum.Browse) {
+                                                    referenceDTO.DestinationPath = destcsprojList.get(fileName) + '\\' + fileName;
+                                                    referenceDTO.DLLName = fileName.substring(0, fileName.lastIndexOf('.'));
+                                                    // Check Whether the project selected is csproj or not.
+                                                    let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
+                                                    ValidationUtility.ValidateProjectType(DestCsprojJsonObj)
+                                                        ? AddRefCmd.AddProjectReference(referenceDTO)
+                                                        : MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, []);
+                                                }
+                                                else {
+                                                    AddRefCmd.BrowseProject(referenceDTO)
+                                                }
+                                            }
+                                        });
+                                }
+                                else {
+                                    MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.BrowseDLLPath, [UserOptionsEnum.Browse])
+                                        .then(response => {
+                                            if (response == UserOptionsEnum.Browse) {
+                                                AddRefCmd.BrowseDllPath(referenceDTO);
+                                            }
+                                        })
                                 }
 
-                                QuickPickUtility.ShowQuickPick(Array.from(destcsprojList.keys()),
-                                    StringUtility.SelectDestinationCsproj)
-                                    .then(fileName => {
-                                        if (typeof fileName != StringUtility.Undefined) {
-                                            // Check if Browse option is selected.
-                                            if (fileName != UserOptionsEnum.Browse) {
-                                                referenceDTO.DestinationPath = destcsprojList.get(fileName) + '\\' + fileName;
-                                                referenceDTO.DLLName = fileName.substring(0, fileName.lastIndexOf('.'));
-                                                // Check Whether the project selected is csproj or not.
-                                                let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
-                                                ValidationUtility.ValidateProjectType(DestCsprojJsonObj) || (referenceDTO.FileType == FileTypeEnum.Dll)
-                                                    ? referenceDTO.FileType == FileTypeEnum.Csproj
-                                                        ? AddRefCmd.AddProjectReference(referenceDTO)
-                                                        : AddRefCmd.AddAssemblyReference(referenceDTO)
-                                                    : MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, []);
-                                            }
-                                            else {
-                                                referenceDTO.FileType == FileTypeEnum.Csproj
-                                                    ? AddRefCmd.BrowseProject(referenceDTO)
-                                                    : AddRefCmd.BrowseDllPath(referenceDTO);
-                                            }
-                                        }
-                                    });
                             }
                             // Error if cli version is not 2.x or higher.
                             else {
@@ -166,7 +182,7 @@ export class AddRefCmd {
     public static BrowseProject(referenceDTO) {
 
         // Opening file explorer to select the project.
-        FileExplorerUtility.OpenFile(DataSource._filterCsproj)
+        FileExplorerUtility.OpenFile(DataSource.GetCsprojFilter())
             .then(referalFileUri => {
                 if (typeof referalFileUri != StringUtility.Undefined) {
                     referenceDTO.DestinationPath = referalFileUri[0].fsPath;
@@ -235,7 +251,7 @@ export class AddRefCmd {
     * Browse dll path.
     */
     public static BrowseDllPath(referenceDTO) {
-        FileExplorerUtility.OpenFile(DataSource._filterDLL)
+        FileExplorerUtility.OpenFile(DataSource.GetDllFilter())
             .then(dllUri => {
                 if (typeof dllUri != StringUtility.Undefined) {
                     referenceDTO.DestinationPath = dllUri[0].fsPath;
