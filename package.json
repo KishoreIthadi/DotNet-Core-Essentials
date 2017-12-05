@@ -2,11 +2,29 @@
     "name": "dotnet-template-generator",
     "displayName": "Dotnet Template Generator",
     "description": "Visual studio code extension for creating different dotnet project templates.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "KishoreIthadi",
+    "author": {
+        "name": "Kishore Ithadi",
+        "email": "ithadikishorebabu@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/KishoreIthadi/DotNet-Template-Generator"
+    },
+    "icon": "images/icon.png",
+    "license": "https://github.com/KishoreIthadi/DotNet-Template-Generator/blob/master/LICENSE",
     "engines": {
         "vscode": "^1.18.0"
     },
+    "keywords": [
+        "DTG",
+        "dotnet",
+        "dotnet-core",
+        "mvc",
+        "web-API",
+        "console"
+    ],
     "categories": [
         "Other"
     ],

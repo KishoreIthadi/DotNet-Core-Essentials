@@ -27,14 +27,20 @@ export class PublishCmd {
 
         if (ValidationUtility.WorkspaceValidation()) {
             let rootFolders = ValidationUtility.SelectRootPath();
-            // Select the workspace folder.
-            QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                .then(response => {
-                    if (typeof response != StringUtility.Undefined) {
-                        let rootPath = rootFolders.get(response);
-                        PublishCmd.GetProjectPath(rootPath);
-                    }
-                })
+            if (rootFolders.size > 1) {
+                // Select the workspace folder.
+                QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                    .then(response => {
+                        if (typeof response != StringUtility.Undefined) {
+                            let rootPath = rootFolders.get(response);
+                            PublishCmd.GetProjectPath(rootPath);
+                        }
+                    });
+            }
+            else {
+                let rootPath = rootFolders.values().next().value;
+                PublishCmd.GetProjectPath(rootPath);
+            }
         }
     }
 

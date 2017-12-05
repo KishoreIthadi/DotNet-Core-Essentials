@@ -27,15 +27,22 @@ export class GenerateCmd {
     public ExecuteGenerateCmd() {
         if (ValidationUtility.WorkspaceValidation()) {
             let rootFolders = ValidationUtility.SelectRootPath();
-            // Select the workspace folder.
-            QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                .then(response => {
-                    if (typeof response != StringUtility.Undefined) {
-                        let GenerateCmdObj: GenerateCmdDTO = new GenerateCmdDTO();
-                        GenerateCmdObj.RootPath = rootFolders.get(response);
-                        GenerateCmd.SelectFramework(GenerateCmdObj);
-                    }
-                });
+            let GenerateCmdObj: GenerateCmdDTO = new GenerateCmdDTO();
+            if (rootFolders.size > 1) {
+                // Select the workspace folder.
+                QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                    .then(response => {
+                        if (typeof response != StringUtility.Undefined) {
+
+                            GenerateCmdObj.RootPath = rootFolders.get(response);
+                            GenerateCmd.SelectFramework(GenerateCmdObj);
+                        }
+                    });
+            }
+            else {
+                GenerateCmdObj.RootPath = rootFolders.values().next().value;
+                GenerateCmd.SelectFramework(GenerateCmdObj);
+            }
         }
     }
 
