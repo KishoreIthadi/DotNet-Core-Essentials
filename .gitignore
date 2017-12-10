@@ -3,7 +3,6 @@ out
 
 # vscode debug files
 .vs
-.vscode
 
 # Extension
 *.vsix

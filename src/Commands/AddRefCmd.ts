@@ -243,7 +243,7 @@ export class AddRefCmd {
         }
         // Showing the info bar after the reference is successfully added.
         else {
-            MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.DTG + addReference.stdout.toString(), []);
+            MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.DCE + addReference.stdout.toString(), []);
         }
     }
 
