@@ -1,12 +1,29 @@
 {
-    "name": "dotnet-template-generator",
-    "displayName": "Dotnet Template Generator",
-    "description": "Visual studio code extension for creating different dotnet project templates.",
+    "name": "dotnet-core-essentials",
+    "displayName": "Dotnet Core Essentials",
+    "description": "Create, debug, run and publish .Net core/standard applications",
     "version": "0.0.1",
     "publisher": "KishoreIthadi",
+    "author": {
+        "name": "Kishore Ithadi",
+        "email": "ithadikishorebabu@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/KishoreIthadi/DotNet-Core-Essentials"
+    },
+    "icon": "images/icon.png",
+    "license": "https://github.com/KishoreIthadi/DotNet-Core-Essentials/blob/master/LICENSE",
     "engines": {
         "vscode": "^1.18.0"
     },
+    "keywords": [
+        "DCE",
+        "dotnet",
+        "dotnet core",
+        ".net",
+        "Microsoft"
+    ],
     "categories": [
         "Other"
     ],
@@ -18,8 +35,7 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "keybindings": [
-            {
+        "keybindings": [{
                 "command": "extension.createTemplate",
                 "key": "ctrl+alt+N"
             },
@@ -36,22 +52,21 @@
                 "key": "ctrl+alt+S"
             }
         ],
-        "commands": [
-            {
+        "commands": [{
                 "command": "extension.createTemplate",
-                "title": "DTG: New Project"
+                "title": "DCE: New Project"
             },
             {
                 "command": "extension.addReference",
-                "title": "DTG: Add Reference"
+                "title": "DCE: Add Reference"
             },
             {
                 "command": "extension.publish",
-                "title": "DTG: Publish"
+                "title": "DCE: Publish"
             },
             {
                 "command": "extension.startup",
-                "title": "DTG: Set StartUp Project"
+                "title": "DCE: Set StartUp Project"
             }
         ]
     },

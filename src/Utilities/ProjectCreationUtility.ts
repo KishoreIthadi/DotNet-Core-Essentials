@@ -55,7 +55,7 @@ export class ProjectCreationUtility {
         var ref = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
             ['sln', GenerateCmdObj.SlnName, 'add', filepath], GenerateCmdObj.SolutionPath);
 
-        if (DataSource._npmReqList.indexOf(GenerateCmdObj.AppType) > -1) {
+        if (DataSource.GetNPMReqList().indexOf(GenerateCmdObj.AppType) > -1) {
             MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.RunNpm, []);
         }
         MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.FormatString(StringUtility.ProjectCreationSuccess, [GenerateCmdObj.AppName]), []);

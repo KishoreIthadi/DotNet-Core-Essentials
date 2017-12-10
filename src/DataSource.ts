@@ -4,10 +4,10 @@ import { FrameworkTypeEnum } from './Enums/FrameworkTypeEnum';
 
 export class DataSource {
 
-    public static _frameworksList: string[] = ['DotNet Core', 'DotNet Standard'];
-    public static _coreVersionList: Map<string, string> = new Map([['Version 2.x', 'netcoreapp2.0']]);
-    public static _standardVersionList: Map<string, string> = new Map([['Version 2.0', 'netstandard2.0']]);
-    public static _appTypeList: Map<string, string> = new Map([
+    private static _frameworksList: string[] = ['DotNet Core', 'DotNet Standard'];
+    private static _coreVersionList: Map<string, string> = new Map([['Version 2.x', 'netcoreapp2.0']]);
+    private static _standardVersionList: Map<string, string> = new Map([['Version 2.0', 'netstandard2.0']]);
+    private static _appTypeList: Map<string, string> = new Map([
         ['Console application', 'console'],
         ['Class Library', 'classlib'],
         ['ASP.NET Core Web App (Model-View-Controller)', 'mvc'],
@@ -18,11 +18,11 @@ export class DataSource {
         ['ASP.NET Core with React.js', 'react'],
         ['ASP.NET Core with React.js and Redux', 'reactredux']
     ]);
-    public static _referenceTypeList: string[] = ['Add Project Reference', 'Add Assembly Reference (.dll Reference)'];
-    public static _validationList: string[] = ['con', 'aux', 'prn', 'com1', 'new', 'lpt2', '', ' ', null,'console','web'];
-    public static _filterCsproj: { [name: string]: string[] } = { 'Project files(*.csproj)': ['csproj'] };
-    public static _filterDLL: { [name: string]: string[] } = { 'Project files(*.dll,*.exe)': ['dll', 'exe'] };
-    public static _npmReqList: string[] = ['angular', 'react', 'reactredux'];
+    private static _referenceTypeList: string[] = ['Add Project Reference', 'Add Assembly Reference (.dll Reference)'];
+    private static _validationList: string[] = ['con', 'aux', 'prn', 'com1', 'new', 'lpt2', '', ' ', null,'console','web'];
+    private static _filterCsproj: { [name: string]: string[] } = { 'Project files(*.csproj)': ['csproj'] };
+    private static _filterDLL: { [name: string]: string[] } = { 'Project files(*.dll,*.exe)': ['dll', 'exe'] };
+    private static _npmReqList: string[] = ['angular', 'react', 'reactredux'];
 
     /**
     * Returns the Frameworks List
@@ -71,5 +71,25 @@ export class DataSource {
                 "Reference": jsonObj
             };
         }
+    }
+    // Returns reference type list.
+    static GetReferenceTypes(): string[] {
+        return DataSource._referenceTypeList;
+    }
+    // Returns validation list.
+    static GetValidationList(): string[] {
+        return DataSource._validationList;
+    }
+    // Returns filters for file explorerutility.
+    static GetCsprojFilter() {
+        return DataSource._filterCsproj;
+    }
+    // Returns filters for file explorerutility.
+    static GetDllFilter() {
+        return DataSource._filterDLL;
+    }
+    // npm required list.
+    static GetNPMReqList(): string[] {
+        return DataSource._npmReqList;
     }
 }
