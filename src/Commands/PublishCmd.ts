@@ -23,24 +23,29 @@ export class PublishCmd {
     constructor() {
     }
 
-    public ExecutePublishCmd(): void {
-
-        if (ValidationUtility.WorkspaceValidation()) {
-            let rootFolders = ValidationUtility.SelectRootPath();
-            if (rootFolders.size > 1) {
-                // Select the workspace folder.
-                QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                    .then(response => {
-                        if (typeof response != StringUtility.Undefined) {
-                            let rootPath = rootFolders.get(response);
-                            PublishCmd.GetProjectPath(rootPath);
-                        }
-                    });
+    public ExecutePublishCmd(args): void {
+      
+        if (typeof args == StringUtility.Undefined) {
+            if (ValidationUtility.WorkspaceValidation()) {
+                let rootFolders = ValidationUtility.SelectRootPath();
+                if (rootFolders.size > 1) {
+                    // Select the workspace folder.
+                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                        .then(response => {
+                            if (typeof response != StringUtility.Undefined) {
+                                let rootPath = rootFolders.get(response);
+                                PublishCmd.GetProjectPath(rootPath);
+                            }
+                        });
+                }
+                else {
+                    let rootPath = rootFolders.values().next().value;
+                    PublishCmd.GetProjectPath(rootPath);
+                }
             }
-            else {
-                let rootPath = rootFolders.values().next().value;
-                PublishCmd.GetProjectPath(rootPath);
-            }
+        }
+        else {
+            PublishCmd.PublishProject(args.fsPath, args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1))
         }
     }
 

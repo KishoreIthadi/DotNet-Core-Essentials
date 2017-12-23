@@ -12,7 +12,7 @@ import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { ProjectTypeEnum } from '../Enums/ProjectTypeEnum';
 
 
-export class StartUpProject {
+export class StartUpProjectCmd {
 
     public ExecuteStartupCmd(args) {
         if (ValidationUtility.WorkspaceValidation()) {
