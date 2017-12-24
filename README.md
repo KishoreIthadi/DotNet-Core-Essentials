@@ -67,6 +67,8 @@ Note : For debuging and running the dotnet projects install C# extension
 ### **How to use DCE?**
 
 - #### Create/Debug/Run Projects
+
+![Alt Text](/images/createproject.gif)
      
 ---
 
