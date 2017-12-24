@@ -33,8 +33,8 @@ export class CleanCmd {
         else {
             CleanCmd.CleanProject(args.fsPath);
         }
-
     }
+    
     public static ValidateProject(rootPath) {
 
         let csprojNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
@@ -69,6 +69,6 @@ export class CleanCmd {
     }
 
     public static CleanProject(projectPath: string) {
-        TerminalUtility.ShowMessageOnTerminal(projectPath, `dotnet clean  ${projectPath}`);
+        TerminalUtility.ShowMessageOnTerminal(projectPath, `dotnet clean  "${projectPath}"`);
     }
 }

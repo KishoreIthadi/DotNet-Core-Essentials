@@ -71,7 +71,7 @@ export class NugetPackageCmd {
             then(response => {
                 if (response != StringUtility.Undefined) {
                     TerminalUtility.ShowMessageOnTerminal
-                        (projectPath, `dotnet add ${projectPath} package ${response}`);
+                        (projectPath, `dotnet add "${projectPath}" package ${response}`);
                 }
             })
 

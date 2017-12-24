@@ -15,53 +15,62 @@ export class StartUpProjectCmd {
 
     public ExecuteStartupCmd(args) {
 
-        if (typeof args == StringUtility.Undefined) {
-            if (ValidationUtility.WorkspaceValidation()) {
-                let rootFolders = ValidationUtility.SelectRootPath();
-                if (rootFolders.size > 1) {
-                    // Select workspace folder.
-                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
-                        .then(response => {
-                            if (typeof response != StringUtility.Undefined) {
-                                let rootPath = rootFolders.get(response);
-                                StartUpProjectCmd.SelectProject(rootPath);
-                            }
-                        });
-                }
-                else {
-                    let rootPath = rootFolders.values().next().value;
-                    StartUpProjectCmd.SelectProject(rootPath);
-                }
-            }
+        let rootFolders = ValidationUtility.SelectRootPath();
+
+        if (rootFolders.size > 1) {
+            MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.StartUpProjError, []);
         }
         else {
-            var csprojName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
-            var csprojfolderPath = args.fsPath.toString().replace(csprojName, "")
-            let rootPath = '';
 
-            if (vscode.workspace.workspaceFolders.length == 1) {
-                rootPath = vscode.workspace.rootPath;
-                StartUpProjectCmd.SetSatrtup(csprojName, csprojfolderPath, rootPath);
-            }
-            else {
-                let index = 0;
-
-                for (let i = 0; i < vscode.workspace.workspaceFolders.length; i++) {
-
-                    // Check if folder name exist in args.path
-                    // There is a chance of having the same folder in multiple paths
-                    // Check the first occurance of the folder
-
-                    let tempIndex = args.fsPath.toString().lastIndexOf(vscode.workspace.workspaceFolders[i].name);
-
-                    if (index == 0 || index < tempIndex) {
-                        index = tempIndex;
-                        rootPath = vscode.workspace.workspaceFolders[i].uri.fsPath;
-                    }
+            if (typeof args == StringUtility.Undefined) {
+                if (ValidationUtility.WorkspaceValidation()) {
+                    // let rootFolders = ValidationUtility.SelectRootPath();
+                    // if (rootFolders.size > 1) {
+                    //     // Select workspace folder.
+                    //     QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                    //         .then(response => {
+                    //             if (typeof response != StringUtility.Undefined) {
+                    //                 let rootPath = rootFolders.get(response);
+                    //                 StartUpProjectCmd.SelectProject(rootPath);
+                    //             }
+                    //         });
+                    // }
+                    // else {
+                    let rootPath = rootFolders.values().next().value;
+                    StartUpProjectCmd.SelectProject(rootPath);
+                    // }
                 }
             }
+            else {
+                var csprojName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
+                var csprojfolderPath = args.fsPath.toString().replace(csprojName, "")
+                let rootPath = '';
 
-            StartUpProjectCmd.SetSatrtup(csprojName, csprojfolderPath, rootPath);
+                if (vscode.workspace.workspaceFolders.length == 1) {
+                    rootPath = vscode.workspace.rootPath;
+                    StartUpProjectCmd.SetSatrtup(csprojName, csprojfolderPath, rootPath);
+                }
+                // else {
+                //     let index = 0;
+
+                //     for (let i = 0; i < vscode.workspace.workspaceFolders.length; i++) {
+
+                //         // Check if folder name exist in args.path
+                //         // There is a chance of having the same folder in multiple paths
+                //         // Check the first occurance of the folder
+
+                //         let tempIndex = args.fsPath.toString().lastIndexOf(vscode.workspace.workspaceFolders[i].name);
+
+                //         if (index == 0 || index < tempIndex) {
+                //             index = tempIndex;
+                //             rootPath = vscode.workspace.workspaceFolders[i].uri.fsPath;
+                //         }
+                //     }
+
+                //     StartUpProjectCmd.SetSatrtup(csprojName, csprojfolderPath, rootPath);
+
+                // }
+            }
         }
     }
 
@@ -93,13 +102,13 @@ export class StartUpProjectCmd {
     public static SetSatrtup(csprojName: string, csprojPath: string, rootPath: string) {
 
         // Deleting all the .vscode folders in workspace
-        for (let i = 0; i < vscode.workspace.workspaceFolders.length; i++) {
+        // for (let i = 0; i < vscode.workspace.workspaceFolders.length; i++) {
 
-            var path = vscode.workspace.workspaceFolders[i].uri.fsPath + "\\.vscode";
-            if (fs.existsSync(path)) {
-                FileUtility.DeleteFolderRecursive(path);
-            }
-        }
+        //     var path = vscode.workspace.workspaceFolders[i].uri.fsPath + "\\.vscode";
+        //     if (fs.existsSync(path)) {
+        //         FileUtility.DeleteFolderRecursive(path);
+        //     }
+        // }
 
         if (typeof csprojName != StringUtility.Undefined) {
             // Capturing csproj path.

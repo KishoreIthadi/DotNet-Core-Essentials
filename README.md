@@ -10,7 +10,6 @@
 * [How to Use DCE?](#how-to-use-DCE)
     * [Create New Project](#Create-New-Project)
     * [Add Reference](#Add-Reference)
-    * [Set Startup Project](#Set-Startup-Project)
     * [Publish](#Publish)
 * [License](#license)
 
@@ -18,7 +17,7 @@
 
 ### **What is DCE?**
 
-**Using this visual studio code extension you can create, debug, run and publish .Net core/standard applications.**
+**Using this visual studio code extension you can create, debug, run and publish DotNet core/standard applications**
 
 ---
 
@@ -40,6 +39,10 @@
 
 - Set Startup Project - `Ctrl+Alt+S`
     
+- Clean Project/Solution
+
+- Build Project/Solution
+
 ---
 
 ### **Prerequisites**
@@ -55,14 +58,13 @@ You can install the **DotNet Core Essentials** from visual studio code Market Pl
 #### Visual Studio Code MarketPlace
 [![ Get from vscode marketplace](/images/vscode.png)](https://marketplace.visualstudio.com/items?itemName=kishoreithadi.dotNet-core-essentials)
 
-Note : For debuging and running the projects install C# extension
+Note : For debuging and running the dotnet projects install C# extension
 
 [![ Get from vscode marketplace](/images/vscode.png)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
 
 ---
 
 ### **How to use DCE?**
-#### Usage
 
 - #### Create/Debug/Run Projects
      
@@ -72,11 +74,11 @@ Note : For debuging and running the projects install C# extension
  
 ---
 
-- #### Set Startup Project
-  
+- #### Publish Project
+
 ---
 
-- #### Publish Project
+- #### Adding Nuget Package
      
 ---
 

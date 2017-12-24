@@ -66,7 +66,7 @@ export class BuildCmd {
 
                         let projectPath: string = csprojNameNPathList.get(selected);
 
-                        // Check Whether the selected file type is is csproj or sln
+                        // Check Whether the selected file type is csproj or sln
                         if (ValidationUtility.CheckCliVersion(projectPath)) {
                             BuildCmd.BuildProject(projectPath);
                         }
@@ -83,6 +83,6 @@ export class BuildCmd {
     }
 
     public static BuildProject(projectPath: string) {
-        TerminalUtility.ShowMessageOnTerminal(projectPath, `dotnet build  ${projectPath}`);
+        TerminalUtility.ShowMessageOnTerminal(projectPath, `dotnet build  "${projectPath}"`);
     }
 }
