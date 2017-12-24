@@ -24,7 +24,7 @@ export class PublishCmd {
     }
 
     public ExecutePublishCmd(args): void {
-      
+
         if (typeof args == StringUtility.Undefined) {
             if (ValidationUtility.WorkspaceValidation()) {
                 let rootFolders = ValidationUtility.SelectRootPath();
@@ -45,7 +45,11 @@ export class PublishCmd {
             }
         }
         else {
-            PublishCmd.PublishProject(args.fsPath, args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1))
+
+            var csProjName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
+            var folderPath = args.fsPath.toString().replace(csProjName, "")
+
+            PublishCmd.PublishProject(folderPath, csProjName);
         }
     }
 
