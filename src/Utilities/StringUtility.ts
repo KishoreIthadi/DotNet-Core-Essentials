@@ -48,6 +48,7 @@ export class StringUtility {
     public static PublishSuccess: string = 'DCE: Publised successfully at {0}';
     public static ProjectCreationSuccess: string = 'DCE: {0} created successfully';
     public static BrowseDLLPath: string = "DCE: Click 'Browse' to select .dll file";
+    public static StartUpProjError: string = "DCE:  Cannot set starup project since multiple folders are added to workspace";
 
     public static FormatString(value, args) {
         args = typeof args === 'object' ? args : Array.prototype.slice.call(arguments, 1);

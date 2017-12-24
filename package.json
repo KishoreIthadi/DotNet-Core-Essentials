@@ -31,11 +31,15 @@
         "onCommand:extension.createTemplate",
         "onCommand:extension.addReference",
         "onCommand:extension.publish",
-        "onCommand:extension.startup"
+        "onCommand:extension.startup",
+        "onCommand:extension.build",
+        "onCommand:extension.clean",
+        "onCommand:extension.addNugetPackage"
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "keybindings": [{
+        "keybindings": [
+            {
                 "command": "extension.createTemplate",
                 "key": "ctrl+alt+N"
             },
@@ -52,7 +56,8 @@
                 "key": "ctrl+alt+S"
             }
         ],
-        "commands": [{
+        "commands": [
+            {
                 "command": "extension.createTemplate",
                 "title": "DCE: New Project"
             },
@@ -67,8 +72,52 @@
             {
                 "command": "extension.startup",
                 "title": "DCE: Set StartUp Project"
+            },
+            {
+                "command": "extension.build",
+                "title": "DCE: Build"
+            },
+            {
+                "command": "extension.clean",
+                "title": "DCE: Clean"
+            },
+            {
+                "command": "extension.addNugetPackage",
+                "title": "DCE: Add NugetPackage"
             }
-        ]
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "extension.build",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.build",
+                    "when": "resourceExtname == .sln"
+                },
+                {
+                    "command": "extension.clean",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.clean",
+                    "when": "resourceExtname == .sln"
+                },
+                {
+                    "command": "extension.startup",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.publish",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.addNugetPackage",
+                    "when": "resourceExtname == .csproj"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
