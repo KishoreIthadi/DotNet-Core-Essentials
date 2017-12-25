@@ -56,11 +56,11 @@
 You can install the **DotNet Core Essentials** from visual studio code Market Place.
 
 #### Visual Studio Code MarketPlace
-[![ Get from vscode marketplace](/images/vscode.png)](https://marketplace.visualstudio.com/items?itemName=kishoreithadi.dotnet-core-essentials)
+[![ Get from vscode marketplace](/images/DCEExt.png)](https://marketplace.visualstudio.com/items?itemName=kishoreithadi.dotnet-core-essentials)
 
 Note : For debuging and running the dotnet projects install C# extension
 
-[![ Get from vscode marketplace](/images/vscode.png)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
+[![ Get from vscode marketplace](/images/CSharp.png)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
 
 ---
 
@@ -73,6 +73,8 @@ Note : For debuging and running the dotnet projects install C# extension
 ---
 
 - #### Add Project/dll Reference
+
+![Alt Text](/images/addref.gif)
  
 ---
 

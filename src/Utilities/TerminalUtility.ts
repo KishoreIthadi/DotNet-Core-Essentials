@@ -7,7 +7,7 @@ export class TerminalUtility {
 
     public static ShowMessageOnTerminal(path: string, message: string) {
 
-        var temp: Terminal = this._terminalStack[0];
+        let temp: Terminal = this._terminalStack[0];
 
         if (this._terminalStack.length > 0) {
             this._terminalStack[0].hide();

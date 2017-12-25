@@ -19,14 +19,15 @@ export class BuildCmd {
     public ExecuteBuildCmd(args) {
 
         if (typeof args == StringUtility.Undefined) {
-            
+
             if (ValidationUtility.WorkspaceValidation()) {
 
                 let rootFolders = ValidationUtility.SelectRootPath();
 
                 if (rootFolders.size > 1) {
                     // Select the workspace folder.
-                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()),
+                        StringUtility.SelectWorkspaceFolder)
                         .then(response => {
                             if (typeof response != StringUtility.Undefined) {
                                 let rootPath = rootFolders.get(response);
@@ -60,13 +61,14 @@ export class BuildCmd {
 
         if (csprojNameNPathList.size > 0) {
 
-            QuickPickUtility.ShowQuickPick(Array.from(csprojNameNPathList.keys()), StringUtility.SelectPublishProject)
+            QuickPickUtility.ShowQuickPick(Array.from(csprojNameNPathList.keys()),
+                StringUtility.SelectBuild)
                 .then(selected => {
                     if (typeof selected != StringUtility.Undefined) {
 
                         let projectPath: string = csprojNameNPathList.get(selected);
 
-                        // Check Whether the selected file type is csproj or sln
+                        // Checking CLI version
                         if (ValidationUtility.CheckCliVersion(projectPath)) {
                             BuildCmd.BuildProject(projectPath);
                         }
@@ -75,7 +77,6 @@ export class BuildCmd {
                         }
                     }
                 });
-
         }
         else {
             MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.ProjectNotFound, []);
