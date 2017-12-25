@@ -42,8 +42,8 @@ export class StartUpProjectCmd {
                 }
             }
             else {
-                var csprojName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
-                var csprojfolderPath = args.fsPath.toString().replace(csprojName, "")
+                let csprojName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
+                let csprojfolderPath = args.fsPath.toString().replace(csprojName, "")
                 let rootPath = '';
 
                 if (vscode.workspace.workspaceFolders.length == 1) {
@@ -104,7 +104,7 @@ export class StartUpProjectCmd {
         // Deleting all the .vscode folders in workspace
         // for (let i = 0; i < vscode.workspace.workspaceFolders.length; i++) {
 
-        //     var path = vscode.workspace.workspaceFolders[i].uri.fsPath + "\\.vscode";
+        //     let path = vscode.workspace.workspaceFolders[i].uri.fsPath + "\\.vscode";
         //     if (fs.existsSync(path)) {
         //         FileUtility.DeleteFolderRecursive(path);
         //     }

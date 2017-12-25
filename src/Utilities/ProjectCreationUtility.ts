@@ -52,7 +52,7 @@ export class ProjectCreationUtility {
         let filepath: string = GenerateCmdObj.ProjectPath + '\\' + GenerateCmdObj.AppName + FileTypeEnum.Csproj;
 
         // Adding csproj to solution.
-        var ref = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
+        let ref = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
             ['sln', GenerateCmdObj.SlnName, 'add', filepath], GenerateCmdObj.SolutionPath);
 
         if (DataSource.GetNPMReqList().indexOf(GenerateCmdObj.AppType) > -1) {

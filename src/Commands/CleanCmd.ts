@@ -16,7 +16,8 @@ export class CleanCmd {
                 let rootFolders = ValidationUtility.SelectRootPath();
                 if (rootFolders.size > 1) {
                     // Select the workspace folder.
-                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()),
+                        StringUtility.SelectWorkspaceFolder)
                         .then(response => {
                             if (typeof response != StringUtility.Undefined) {
                                 let rootPath = rootFolders.get(response);
@@ -34,7 +35,7 @@ export class CleanCmd {
             CleanCmd.CleanProject(args.fsPath);
         }
     }
-    
+
     public static ValidateProject(rootPath) {
 
         let csprojNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
@@ -49,7 +50,8 @@ export class CleanCmd {
         });
 
         if (csprojNameNPathList.size > 0) {
-            QuickPickUtility.ShowQuickPick(Array.from(csprojNameNPathList.keys()), StringUtility.SelectPublishProject)
+            QuickPickUtility.ShowQuickPick(Array.from(csprojNameNPathList.keys()),
+                StringUtility.SelectClean)
                 .then(selected => {
                     if (typeof selected != StringUtility.Undefined) {
                         let projectPath: string = csprojNameNPathList.get(selected);

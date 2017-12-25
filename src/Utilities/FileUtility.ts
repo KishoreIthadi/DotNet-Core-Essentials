@@ -23,7 +23,7 @@ export class FileUtility {
     // public static DeleteFolderRecursive = function (path) {
     //     if (fs.existsSync(path)) {
     //         fs.readdirSync(path).forEach(function (file, index) {
-    //             var curPath = path + "/" + file;
+    //             let curPath = path + "/" + file;
     //             if (fs.lstatSync(curPath).isDirectory()) { // recurse
     //                 FileUtility.DeleteFolderRecursive(curPath);
     //             } else { // delete file

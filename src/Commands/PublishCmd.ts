@@ -30,7 +30,8 @@ export class PublishCmd {
                 let rootFolders = ValidationUtility.SelectRootPath();
                 if (rootFolders.size > 1) {
                     // Select the workspace folder.
-                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
+                    QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()),
+                        StringUtility.SelectWorkspaceFolder)
                         .then(response => {
                             if (typeof response != StringUtility.Undefined) {
                                 let rootPath = rootFolders.get(response);
@@ -46,8 +47,8 @@ export class PublishCmd {
         }
         else {
 
-            var csProjName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
-            var folderPath = args.fsPath.toString().replace(csProjName, "")
+            let csProjName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
+            let folderPath = args.fsPath.toString().replace(csProjName, "")
 
             PublishCmd.PublishProject(folderPath, csProjName);
         }
@@ -61,7 +62,8 @@ export class PublishCmd {
             FileTypeEnum.Csproj, new Map<string, string>());
 
         if (csprojNameNPathList.size > 0) {
-            QuickPickUtility.ShowQuickPick(Array.from(csprojNameNPathList.keys()), StringUtility.SelectPublishProject)
+            QuickPickUtility.ShowQuickPick(Array.from(csprojNameNPathList.keys()),
+                StringUtility.SelectPublishProject)
                 .then(csprojName => {
                     if (typeof csprojName != StringUtility.Undefined) {
                         let projectPath: string = csprojNameNPathList.get(csprojName);

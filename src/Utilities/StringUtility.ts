@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+
 export class StringUtility {
 
     public static WorkspaceEmpty: string = 'Workspace is empty. Open a folder';
@@ -48,8 +49,13 @@ export class StringUtility {
     public static PublishSuccess: string = 'DCE: Publised successfully at {0}';
     public static ProjectCreationSuccess: string = 'DCE: {0} created successfully';
     public static BrowseDLLPath: string = "DCE: Click 'Browse' to select .dll file";
-    public static StartUpProjError: string = "DCE:  Cannot set starup project since multiple folders are added to workspace";
-
+    public static StartUpProjError: string = "DCE: Cannot set starup project since multiple folders are added to workspace";
+    public static SelectBuild: string = "DCE: Select csporj or sln to build";
+    public static SelectClean: string = "DCE: Select csporj or sln to clean";
+    public static EnterNugetPackageName: string = "DCE: Enter the Nuget Package name";
+    public static SelectNugetPackage: string = "DCE:  Select csporj or sln for installing nuget package";
+    public static InvalidPackageName: string = 'DCE: Invalid package name';
+   
     public static FormatString(value, args) {
         args = typeof args === 'object' ? args : Array.prototype.slice.call(arguments, 1);
 
