@@ -1,0 +1,13 @@
+#ignore while packaging
+
+*.vs
+.vscode/**
+.vscode-test/**
+out/test/**
+test/**
+src/**
+**/*.map
+.gitignore
+tsconfig.json
+images/**
+!images/icon.png

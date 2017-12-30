@@ -2,7 +2,7 @@
     "name": "dotnet-core-essentials",
     "displayName": "Dotnet Core Essentials",
     "description": "Create, debug, run and publish .Net core/standard applications",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "KishoreIthadi",
     "author": {
         "name": "Kishore Ithadi",
@@ -36,7 +36,7 @@
         "onCommand:extension.clean",
         "onCommand:extension.addNugetPackage"
     ],
-    "main": "./out/src/extension",
+    "main": "./out/src/Extension",
     "contributes": {
         "keybindings": [
             {
@@ -127,10 +127,10 @@
     },
     "devDependencies": {
         "@types/mocha": "^2.2.32",
-        "@types/node": "^6.0.40",
         "mocha": "^2.3.3",
-        "typescript": "^2.0.3",
-        "vscode": "^1.1.8"
+        "vscode": "^1.1.8",
+        "@types/node": "^6.0.40",
+        "typescript": "^2.0.3"
     },
     "dependencies": {
         "fs-extra": "^4.0.2",
