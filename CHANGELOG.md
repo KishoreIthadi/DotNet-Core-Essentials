@@ -1,10 +1,16 @@
 # Dotnet Core Essentials Change Log
 
+## 0.0.1 - 2017-12-30
+
+### Bug Fixes
+
+- Fixed linux platform related issues
+
 ## 0.0.1 - 2017-12-25
 
 ### Added
 
-- Creating Console, Web-API, MVC, Angular, React, React-Redux & ClassLibrary projects in core 2.0 framework and standard framework.
+- Creating Console, Web-API, MVC, Angular, React, React-Redux & ClassLibrary projects in core 2.0 framework and standard framework
 - Adding project/dll reference
 - Publishing project
 - Selecting a startup project

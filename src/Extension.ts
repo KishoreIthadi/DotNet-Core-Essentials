@@ -2,13 +2,13 @@
 
 import * as vscode from 'vscode';
 
-import { AddRefCmd } from './commands/AddRefCmd';
-import { GenerateCmd } from './commands/GenerateCmd';
-import { PublishCmd } from './commands/PublishCmd';
-import { StartUpProjectCmd } from './Commands/StartupProjectCmd';
-import { BuildCmd } from './Commands/BuildCmd';
-import { CleanCmd } from './Commands/CleanCmd';
-import { NugetPackageCmd } from './Commands/NugetPackageCmd';
+import { AddRefCmd } from './DCECommands/AddRefCmd';
+import { GenerateCmd } from './DCECommands/GenerateCmd';
+import { PublishCmd } from './DCECommands/PublishCmd';
+import { StartUpProjectCmd } from './DCECommands/StartupProjectCmd';
+import { BuildCmd } from './DCECommands/BuildCmd';
+import { CleanCmd } from './DCECommands/CleanCmd';
+import { NugetPackageCmd } from './DCECommands/NugetPackageCmd';
 
 /**
 * Activating extension
