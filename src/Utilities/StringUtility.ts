@@ -3,6 +3,8 @@ import * as vscode from 'vscode';
 
 export class StringUtility {
 
+    public static PathSeperator = /^win/.test(process.platform) ? '\\' : '/';
+    
     public static WorkspaceEmpty: string = 'Workspace is empty. Open a folder';
     public static SelectWorkspaceFolder: string = 'Select the target workspace folder';
     public static NotProject: string = 'DCE: The selected csproj is not a core or standard framework';
@@ -36,10 +38,10 @@ export class StringUtility {
     public static PublishExists: string = "DCE: A folder with 'PublishOutput' already exists";
     public static StartupError: string = 'DCE: Cannot add this project as a startup project';
     public static StartupProject: string = 'Select the startup project';
-    public static RelativeDllPath: string = '\\bin\\debug\\netcoreapp2.0\\';
-    public static RelativeVscodePath: string = '\\.vscode';
-    public static LaunchPath: string = '\\.vscode\\launch.json';
-    public static TasksPath: string = '\\.vscode\\tasks.json';
+    public static RelativeDllPath: string = StringUtility.PathSeperator + 'bin' + StringUtility.PathSeperator + 'Debug' + StringUtility.PathSeperator + 'netcoreapp2.0' + StringUtility.PathSeperator;
+    public static RelativeVscodePath: string = StringUtility.PathSeperator + '.vscode';
+    public static LaunchPath: string = StringUtility.PathSeperator + '.vscode' + StringUtility.PathSeperator + 'launch.json';
+    public static TasksPath: string = StringUtility.PathSeperator + '.vscode' + StringUtility.PathSeperator + 'tasks.json';
     public static StartupProjectSet = 'DCE: Start up project set to {0}';
     public static Core: string = 'core';
     public static Standard: string = 'standard';
@@ -55,7 +57,7 @@ export class StringUtility {
     public static EnterNugetPackageName: string = "DCE: Enter the Nuget Package name";
     public static SelectNugetPackage: string = "DCE:  Select csporj or sln for installing nuget package";
     public static InvalidPackageName: string = 'DCE: Invalid package name';
-   
+
     public static FormatString(value, args) {
         args = typeof args === 'object' ? args : Array.prototype.slice.call(arguments, 1);
 

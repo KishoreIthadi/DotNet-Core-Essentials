@@ -107,7 +107,7 @@ export class AddRefCmd {
                 .then(sourceCSprojName => {
                     if (typeof sourceCSprojName != StringUtility.Undefined) {
 
-                        referenceDTO.SourcePath = sourcecsprojList.get(sourceCSprojName) + '\\' + sourceCSprojName;
+                        referenceDTO.SourcePath = sourcecsprojList.get(sourceCSprojName) + StringUtility.PathSeperator + sourceCSprojName;
                         referenceDTO.CSProjName = sourceCSprojName.substring(0, sourceCSprojName.lastIndexOf('.'));
                         // Check whether the project is valid project or not.
                         let SourceCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.SourcePath).toString(), { comments: false });
@@ -133,7 +133,7 @@ export class AddRefCmd {
                                             if (typeof fileName != StringUtility.Undefined) {
                                                 // Check if Browse option is selected.
                                                 if (fileName != UserOptionsEnum.Browse) {
-                                                    referenceDTO.DestinationPath = destcsprojList.get(fileName) + '\\' + fileName;
+                                                    referenceDTO.DestinationPath = destcsprojList.get(fileName) + StringUtility.PathSeperator + fileName;
                                                     referenceDTO.DLLName = fileName.substring(0, fileName.lastIndexOf('.'));
                                                     // Check Whether the project selected is csproj or not.
                                                     let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
@@ -269,7 +269,7 @@ export class AddRefCmd {
     public static AddAssemblyReference(referenceDTO) {
 
         referenceDTO.DLLName = referenceDTO.DestinationPath
-            .substring(referenceDTO.DestinationPath.lastIndexOf('\\') + 1);
+            .substring(referenceDTO.DestinationPath.lastIndexOf(StringUtility.PathSeperator) + 1);
 
         // Checking for circular dependency.
         // Checking if same project dll is selected.
@@ -322,7 +322,7 @@ export class AddRefCmd {
     public static CircularDependencyCheck(referenceDTO): any {
         if (referenceDTO.SourcePath == referenceDTO.DestinationPath ||
             fs.readFileSync(referenceDTO.DestinationPath).
-                includes(referenceDTO.SourcePath.substring(referenceDTO.SourcePath.lastIndexOf('\\') + 1))) {
+                includes(referenceDTO.SourcePath.substring(referenceDTO.SourcePath.lastIndexOf(StringUtility.PathSeperator) + 1))) {
             return true;
         }
         return false;

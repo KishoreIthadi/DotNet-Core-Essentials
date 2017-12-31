@@ -135,13 +135,13 @@ export class GenerateCmd {
                     // Checks whether sln name is valid. 
                     if (ValidationUtility.ValidateSlnAndProjectName(slnName)) {
                         GenerateCmdObj.SlnName = slnName;
-                        if (fs.existsSync(GenerateCmdObj.RootPath + '\\' + GenerateCmdObj.SlnName + '.sln')) {
+                        if (fs.existsSync(GenerateCmdObj.RootPath + StringUtility.PathSeperator + GenerateCmdObj.SlnName + '.sln')) {
                             MessageUtility.ShowMessage(MessageTypeEnum.Error,
                                 StringUtility.FormatString(StringUtility.SolutionExists,
                                     [GenerateCmdObj.RootPath]), []);
                         }
                         // Checks whether folder exists.
-                        else if (fs.existsSync(GenerateCmdObj.RootPath + '\\' + GenerateCmdObj.SlnName)) {
+                        else if (fs.existsSync(GenerateCmdObj.RootPath + StringUtility.PathSeperator + GenerateCmdObj.SlnName)) {
                             MessageUtility.ShowMessage(MessageTypeEnum.Error,
                                 StringUtility.FormatString(StringUtility.FolderExists,
                                     [GenerateCmdObj.RootPath]), []);
@@ -174,7 +174,7 @@ export class GenerateCmd {
                             GenerateCmdObj.AppName = appName;
                             // Replaces spaces with underscore.
                             GenerateCmdObj.AppName = GenerateCmdObj.AppName.replace(/ /g, '_');
-                            if (fs.existsSync(GenerateCmdObj.SolutionPath + '\\' + appName)) {
+                            if (fs.existsSync(GenerateCmdObj.SolutionPath + StringUtility.PathSeperator + appName)) {
                                 MessageUtility.ShowMessage(MessageTypeEnum.Error,
                                     StringUtility.FormatString(StringUtility.FolderExists,
                                         [GenerateCmdObj.RootPath]), []);

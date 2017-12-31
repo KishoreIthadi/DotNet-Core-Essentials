@@ -47,7 +47,7 @@ export class PublishCmd {
         }
         else {
 
-            let csProjName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
+            let csProjName = args.fsPath.substring(args.fsPath.lastIndexOf(StringUtility.PathSeperator) + 1);
             let folderPath = args.fsPath.toString().replace(csProjName, "")
 
             PublishCmd.PublishProject(folderPath, csProjName);
@@ -69,7 +69,7 @@ export class PublishCmd {
                         let projectPath: string = csprojNameNPathList.get(csprojName);
                         // Check Whether the project selected is csproj or not.
                         if (ValidationUtility.CheckCliVersion(projectPath)) {
-                            let csprojJsonObj: any = XMLMapping.load(fs.readFileSync(projectPath + '\\' + csprojName).toString());
+                            let csprojJsonObj: any = XMLMapping.load(fs.readFileSync(projectPath + StringUtility.PathSeperator + csprojName).toString());
                             ValidationUtility.ValidateProjectType(csprojJsonObj)
                                 ? PublishCmd.PublishProject(projectPath, csprojName)
                                 : MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, [])
@@ -95,11 +95,11 @@ export class PublishCmd {
                     FileExplorerUtility.OpenFolder()
                         .then(fileUri => {
                             if (typeof fileUri != StringUtility.Undefined) {
-                                if (!fs.existsSync(fileUri[0].fsPath + '\\PublishOutput')) {
+                                if (!fs.existsSync(fileUri[0].fsPath + StringUtility.PathSeperator +'PublishOutput')) {
 
                                     // Publishes a project.
                                     let publisher: any = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
-                                        ['publish', csprojName, '-o', fileUri[0].fsPath + '\\PublishOutput'], projectPath);
+                                        ['publish', csprojName, '-o', fileUri[0].fsPath + StringUtility.PathSeperator +'PublishOutput'], projectPath);
 
                                     if (publisher.stdout.includes('error')) {
                                         MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.Error, [UserOptionsEnum.ShowOutput])

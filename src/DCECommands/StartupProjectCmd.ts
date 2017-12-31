@@ -42,7 +42,7 @@ export class StartUpProjectCmd {
                 }
             }
             else {
-                let csprojName = args.fsPath.substring(args.fsPath.lastIndexOf('\\') + 1);
+                let csprojName = args.fsPath.substring(args.fsPath.lastIndexOf(StringUtility.PathSeperator) + 1);
                 let csprojfolderPath = args.fsPath.toString().replace(csprojName, "")
                 let rootPath = '';
 
@@ -104,7 +104,7 @@ export class StartUpProjectCmd {
         // Deleting all the .vscode folders in workspace
         // for (let i = 0; i < vscode.workspace.workspaceFolders.length; i++) {
 
-        //     let path = vscode.workspace.workspaceFolders[i].uri.fsPath + "\\.vscode";
+        //     let path = vscode.workspace.workspaceFolders[i].uri.fsPath + StringUtility.PathSeperator +".vscode";
         //     if (fs.existsSync(path)) {
         //         FileUtility.DeleteFolderRecursive(path);
         //     }
@@ -112,7 +112,7 @@ export class StartUpProjectCmd {
 
         if (typeof csprojName != StringUtility.Undefined) {
             // Capturing csproj path.
-            let completecsprojPath = csprojPath + '\\' + csprojName;
+            let completecsprojPath = csprojPath + StringUtility.PathSeperator + csprojName;
             // Converting the file to csproj.
             let csprojJsonData = XMLMapping.tojson(fs.readFileSync(completecsprojPath).toString())
             // Validating csproj.
