@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { StringUtility } from './StringUtility';
 
 export class FileUtility {
 
@@ -7,8 +8,8 @@ export class FileUtility {
         let reg: RegExp = new RegExp(fileExt + '$');
         let files: string[] = fs.readdirSync(dir);
         files.forEach(function (file) {
-            if (fs.statSync(dir + '\\' + file).isDirectory()) {
-                filelist = FileUtility.GetFilesbyExtension(dir + '\\' + file, fileExt, filelist);
+            if (fs.statSync(dir + StringUtility.PathSeperator + file).isDirectory()) {
+                filelist = FileUtility.GetFilesbyExtension(dir + '/' + file, fileExt, filelist);
             }
             else {
                 if (reg.test(file)) {

@@ -23,8 +23,8 @@ export class ProjectCreationUtility {
         // Creates sln file if it doesn't exist.
         if (!GenerateCmdObj.IsSlnExists) {
             // Paths.
-            GenerateCmdObj.SolutionPath = GenerateCmdObj.RootPath + "\\" + GenerateCmdObj.SlnName;
-            GenerateCmdObj.ProjectPath = GenerateCmdObj.SolutionPath + '\\' + GenerateCmdObj.AppName;
+            GenerateCmdObj.SolutionPath = GenerateCmdObj.RootPath + StringUtility.PathSeperator + GenerateCmdObj.SlnName;
+            GenerateCmdObj.ProjectPath = GenerateCmdObj.SolutionPath + StringUtility.PathSeperator + GenerateCmdObj.AppName;
 
             fs.mkdirSync(GenerateCmdObj.SolutionPath);
 
@@ -34,7 +34,7 @@ export class ProjectCreationUtility {
             GenerateCmdObj.SlnName = GenerateCmdObj.SlnName + '.sln';
         }
         else {
-            GenerateCmdObj.ProjectPath = GenerateCmdObj.SolutionPath + "\\" + GenerateCmdObj.AppName;
+            GenerateCmdObj.ProjectPath = GenerateCmdObj.SolutionPath + StringUtility.PathSeperator + GenerateCmdObj.AppName;
         }
 
         // Creating class library for dotnet core framework.
@@ -49,7 +49,7 @@ export class ProjectCreationUtility {
                 ['new', GenerateCmdObj.AppType, '-o', GenerateCmdObj.AppName], GenerateCmdObj.SolutionPath);
         }
 
-        let filepath: string = GenerateCmdObj.ProjectPath + '\\' + GenerateCmdObj.AppName + FileTypeEnum.Csproj;
+        let filepath: string = GenerateCmdObj.ProjectPath + '/' + GenerateCmdObj.AppName + FileTypeEnum.Csproj;
 
         // Adding csproj to solution.
         let ref = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
