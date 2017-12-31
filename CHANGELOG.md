@@ -1,6 +1,12 @@
 # Dotnet Core Essentials Change Log
 
-## 0.0.1 - 2017-12-30
+## 0.0.3 - 2017-12-31
+
+### Bug Fixes
+
+- Fixed linux platform related issues
+
+## 0.0.2 - 2017-12-30
 
 ### Bug Fixes
 
