@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="images/icon.png"/>
+</p>
+
+---
 
 # **DotNet Core Essentials**
 
