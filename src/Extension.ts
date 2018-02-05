@@ -9,6 +9,8 @@ import { StartUpProjectCmd } from './DCECommands/StartupProjectCmd';
 import { BuildCmd } from './DCECommands/BuildCmd';
 import { CleanCmd } from './DCECommands/CleanCmd';
 import { NugetPackageCmd } from './DCECommands/NugetPackageCmd';
+import { RemoveProjectReference } from './DCECommands/RemoveProjectReference';
+import { RemoveNugetPackage } from './DCECommands/RemoveNugetPackage'
 
 /**
 * Activating extension
@@ -22,6 +24,8 @@ export function activate(context: vscode.ExtensionContext) {
   let buildCmdObj: BuildCmd = new BuildCmd();
   let cleanCmdObj: CleanCmd = new CleanCmd();
   let nugetPackageCmdObj: NugetPackageCmd = new NugetPackageCmd();
+  let removeProjectReferenceObj:RemoveProjectReference = new RemoveProjectReference();
+  let removePackageObj:RemoveNugetPackage = new RemoveNugetPackage();
 
   // Registering Commands.
   let createTemplateCmd: vscode.Disposable =
@@ -39,10 +43,16 @@ export function activate(context: vscode.ExtensionContext) {
   let nugetPackageCmd: vscode.Disposable =
     vscode.commands.registerCommand('extension.addNugetPackage',
       (args) => { nugetPackageCmdObj.ExecuteAddNugetPackageCmd(args) });
+  let removeProjectReferenceCmd: vscode.Disposable =
+      vscode.commands.registerCommand('extension.removeProjectReference',
+        (args) => { removeProjectReferenceObj.ExecuteRemoveReferenceCmd(args) });
+  let removeNugetPackageCmd: vscode.Disposable =
+        vscode.commands.registerCommand('extension.removeNugetPackage',
+          (args) => { removePackageObj.ExecuteRemoveNugetPackageCmd(args) });
 
   // Disposing the objects.
   context.subscriptions.push(createTemplateCmd, addReferenceCmd, startUpProjectCmd,
-    publishCmd, buildCmd, cleanCmd, nugetPackageCmd);
+    publishCmd, buildCmd, cleanCmd, nugetPackageCmd,removeProjectReferenceCmd,removeNugetPackageCmd);
 }
 /**
 * Deactivating extension
