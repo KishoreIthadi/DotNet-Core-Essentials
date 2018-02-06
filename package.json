@@ -34,7 +34,9 @@
         "onCommand:extension.startup",
         "onCommand:extension.build",
         "onCommand:extension.clean",
-        "onCommand:extension.addNugetPackage"
+        "onCommand:extension.addNugetPackage",
+        "onCommand:extension.removeProjectReference",
+        "onCommand:extension.removeNugetPackage"
     ],
     "main": "./out/src/Extension",
     "contributes": {
@@ -84,6 +86,14 @@
             {
                 "command": "extension.addNugetPackage",
                 "title": "DCE: Add NugetPackage"
+            },
+            {
+                "command": "extension.removeProjectReference",
+                "title": "DCE: Remove Project Reference"
+            },
+            {
+                "command": "extension.removeNugetPackage",
+                "title": "DCE: Remove Nuget Package"
             }
         ],
         "menus": {
@@ -115,6 +125,14 @@
                 {
                     "command": "extension.addNugetPackage",
                     "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.removeProjectReference",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.removeNugetPackage",
+                    "when": "resourceExtname == .csproj"
                 }
             ]
         }
@@ -135,6 +153,7 @@
     "dependencies": {
         "fs-extra": "^4.0.2",
         "path": "^0.12.7",
+        "vsce": "^1.36.1",
         "xml-mapping": "^1.7.1"
     }
 }

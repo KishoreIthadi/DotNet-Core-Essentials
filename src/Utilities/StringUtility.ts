@@ -57,6 +57,14 @@ export class StringUtility {
     public static EnterNugetPackageName: string = "DCE: Enter the Nuget Package name";
     public static SelectNugetPackage: string = "DCE:  Select csporj or sln for installing nuget package";
     public static InvalidPackageName: string = 'DCE: Invalid package name';
+    public static PackageNotFound: string = 'DCE: No nuget package found';
+    public static ProjectRefNotFound: string = 'DCE: No project reference found';
+    public static SelectPackage:string = 'Select the package to remove';
+    public static SelectProject:string = 'Select the project to remove';
+    public static SelectCsproj:string = 'Select the Project';
+    public static RemovePackageSuccess:string = 'Package reference `{0}` removed';
+
+
 
     public static FormatString(value, args) {
         args = typeof args === 'object' ? args : Array.prototype.slice.call(arguments, 1);

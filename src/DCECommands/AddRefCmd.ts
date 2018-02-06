@@ -231,12 +231,12 @@ export class AddRefCmd {
             referenceDTO.Path);
 
         // Displaying output if any error occurs.
-        if (addReference.stderr.byteLength > 0) {
+        if (addReference.stderr.byteLength > 0 ) {
             MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.Error, [UserOptionsEnum.ShowOutput])
                 .then(response => {
                     if (response == UserOptionsEnum.ShowOutput) {
                         OutputChannelUtility.outputChannel.show();
-                        OutputChannelUtility.outputChannel.appendLine(`${addReference.stderr.toString()}`);
+                        OutputChannelUtility.outputChannel.appendLine(`${addReference.stderr.toString()}${addReference.stdout.toString()}`);
                     }
                 })
 
