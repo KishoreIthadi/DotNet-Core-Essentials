@@ -16,7 +16,9 @@ export class DataSource {
         ['ASP.NET Core with Angular', 'angular'],
         ['ASP.NET Core Web App with Razor', 'razor'],
         ['ASP.NET Core with React.js', 'react'],
-        ['ASP.NET Core with React.js and Redux', 'reactredux']
+        ['ASP.NET Core with React.js and Redux', 'reactredux'],
+        ['Unit Test Project', 'mstest'],
+        ['xUnit Test Project','xunit']
     ]);
     private static _referenceTypeList: string[] = ['Add Project Reference', 'Add Assembly Reference (.dll Reference)'];
     private static _validationList: string[] = ['con', 'aux', 'prn', 'com1', 'new', 'lpt2', '', ' ', null,'console','web'];
