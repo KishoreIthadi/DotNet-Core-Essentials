@@ -1,5 +1,9 @@
 # Dotnet Core Essentials Change Log
 
+## 0.0.3 - 2018-03-04
+
+- Allowed '.' in project names the same as the cli
+
 ## 0.0.3 - 2017-12-31
 
 ### Bug Fixes
