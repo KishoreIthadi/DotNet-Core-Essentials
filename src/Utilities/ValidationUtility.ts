@@ -14,7 +14,7 @@ import { DataSource } from '../DataSource';
 export class ValidationUtility {
 
     public static ValidateSlnAndProjectName(name: any): boolean {
-        return /^[a-zA-Z0-9_ ]*$/.test(name) && !(DataSource.GetValidationList().indexOf(name) > -1);
+        return /^[a-zA-Z0-9_. ]*$/.test(name) && !(DataSource.GetValidationList().indexOf(name) > -1);
     }
 
     // To check whether dotnet core 2.x sdk is installed.
