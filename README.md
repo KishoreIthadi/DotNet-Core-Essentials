@@ -6,9 +6,11 @@
 * [Prerequisite](#prerequisites)
 * [Install the extension](#install-the-extension)
     * [Visual studio code marketplace](#visual-studio-code-marketplace)
-* [How to Use DCE?](#how-to-use-DCE)
+* [How to Use DCE?](#How-To-Use-DCE)
     * [Create New Project](#Create-New-Project)
-    * [Add Reference](#Add-Reference)
+    * [Add/Remove Project Reference](#Add-Remove-Project-Reference)
+    * [Add/Remove DLL Reference](#Add-Remove-DLL-Reference)
+    * [Nuget Packages](#Nuget-Packages)
     * [Publish](#Publish)
 * [License](#license)
 
@@ -32,7 +34,9 @@
     - ASP.NET Core with React.js and Redux
     - ASP.NET Core Web API
 
-- Add Project/dll Reference - `Ctrl+Alt+A`
+- Add Project/dll Reference
+
+- Remove Project/dll Reference
 
 - Publish Project - `Ctrl+Alt+P`
 
@@ -41,6 +45,8 @@
 - Clean Project/Solution
 
 - Build Project/Solution
+
+- Add/Remove Nuget Packages
 
 ---
 
@@ -63,7 +69,7 @@ Note : For debuging and running the dotnet projects install C# extension
 
 ---
 
-### **How to use DCE?**
+### **#How To Use DCE**
 
 - #### Create/Debug/Run Projects
 
@@ -77,12 +83,26 @@ Note : For debuging and running the dotnet projects install C# extension
  
 ---
 
-- #### Publish Project
+- #### Add/Remove Project Reference
 
+![Alt Text](/images/addref.gif)
+ 
 ---
 
-- #### Adding Nuget Package
-     
+- #### Add/Remove dll Reference
+
+![Alt Text](/images/addref.gif)
+ 
+---
+
+- #### Add/remove Nuget packages
+
+![Alt Text](/images/addref.gif)
+ 
+---
+
+- #### Publish Project
+
 ---
 
 

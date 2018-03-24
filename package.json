@@ -48,10 +48,6 @@
                 "key": "ctrl+alt+N"
             },
             {
-                "command": "extension.addReference",
-                "key": "ctrl+alt+A"
-            },
-            {
                 "command": "extension.publish",
                 "key": "ctrl+alt+P"
             },
