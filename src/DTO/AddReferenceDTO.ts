@@ -6,4 +6,5 @@ export class AddReferenceDTO {
     public DestinationPath: string;
     public CSProjName: string;
     public DLLName: string;
+    public ReferenceType: string;
 }
