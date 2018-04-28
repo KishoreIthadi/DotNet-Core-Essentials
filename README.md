@@ -73,37 +73,31 @@ Note: For debugging and running the dotnet projects install the C# extension
 
 - #### Create/Debug/Run Projects
 
-<!-- ![Alt Text](/images/createproject.gif) -->
+![Alt Text](/images/createproject.gif)
      
 ---
 
 - #### Add/Remove Project Reference
 
-<!-- ![Alt Text](/images/addref.gif) -->
+![Alt Text](/images/projectref.gif)
  
 ---
 
 - #### Add/Remove DLL Reference
 
-<!-- ![Alt Text](/images/addref.gif) -->
- 
----
-
-- #### Add/Remove dll Reference
-
-<!-- ![Alt Text](/images/addref.gif) -->
+![Alt Text](/images/dllref.gif)
  
 ---
 
 - #### Add/Remove Nuget packages
 
-<!-- ![Alt Text](/images/addref.gif) -->
+![Alt Text](/images/nuget.gif)
  
 ---
 
 - #### Publish Project
 
-<!-- ![Alt Text](/images/addref.gif) -->
+![Alt Text](/images/publish.gif)
 
 ---
 
