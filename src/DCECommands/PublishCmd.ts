@@ -95,11 +95,11 @@ export class PublishCmd {
                     FileExplorerUtility.OpenFolder()
                         .then(fileUri => {
                             if (typeof fileUri != StringUtility.Undefined) {
-                                if (!fs.existsSync(fileUri[0].fsPath + StringUtility.PathSeperator +'PublishOutput')) {
+                                if (!fs.existsSync(fileUri[0].fsPath + StringUtility.PathSeperator + 'PublishOutput')) {
 
                                     // Publishes a project.
                                     let publisher: any = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
-                                        ['publish', csprojName, '-o', fileUri[0].fsPath + StringUtility.PathSeperator +'PublishOutput'], projectPath);
+                                        ['publish', csprojName, '-o', fileUri[0].fsPath + StringUtility.PathSeperator + 'PublishOutput'], projectPath);
 
                                     if (publisher.stdout.includes('error')) {
                                         MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.Error, [UserOptionsEnum.ShowOutput])

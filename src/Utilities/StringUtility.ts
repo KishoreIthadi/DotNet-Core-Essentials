@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 export class StringUtility {
 
     public static PathSeperator = /^win/.test(process.platform) ? '\\' : '/';
-    
+
     public static WorkspaceEmpty: string = 'Workspace is empty. Open a folder';
     public static SelectWorkspaceFolder: string = 'Select the target workspace folder';
     public static NotProject: string = 'DCE: The selected csproj is not a core or standard framework';
@@ -59,15 +59,15 @@ export class StringUtility {
     public static InvalidPackageName: string = 'DCE: Invalid package name';
     public static PackageNotFound: string = 'DCE: No nuget package found';
     public static ProjectRefNotFound: string = 'DCE: No project reference found';
-    public static SelectPackage:string = 'Select the package to remove';
-    public static SelectProject:string = 'Select the project to remove';
-    public static SelectCsproj:string = 'Select the Project';
-    public static RemovePackageSuccess:string = 'DCE: Package reference `{0}` removed';
-    public static PressBrowse:string = 'Press "Browse" to select destination {0} path';
-    public static Project:string = 'Project';
-    public static AssemblyRefNotFound:string = 'No Assembly reference found'; 
-    public static SelectDll:string = 'Select dll to remove reference';
-    public static RemoveDllSuccess:string = 'DCE: Dll reference `{0}` removed';
+    public static SelectPackage: string = 'Select the package to remove';
+    public static SelectProject: string = 'Select the project to remove';
+    public static SelectCsproj: string = 'Select the Project';
+    public static RemovePackageSuccess: string = 'DCE: Package reference `{0}` removed';
+    public static PressBrowse: string = 'Press "Browse" to select destination {0} path';
+    public static Project: string = 'Project';
+    public static AssemblyRefNotFound: string = 'No Assembly reference found';
+    public static SelectDll: string = 'Select dll to remove reference';
+    public static RemoveDllSuccess: string = 'DCE: Dll reference `{0}` removed';
 
 
 

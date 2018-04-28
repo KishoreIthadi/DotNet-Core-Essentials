@@ -2,7 +2,7 @@
     "name": "dotnet-core-essentials",
     "displayName": "Dotnet Core Essentials",
     "description": "Create, debug, run and publish .Net core/standard applications",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "KishoreIthadi",
     "author": {
         "name": "Kishore Ithadi",
@@ -91,15 +91,15 @@
             },
             {
                 "command": "extension.addProjectReference",
-                "title": "DCE: Add Project Reference "
+                "title": "DCE: Add Project Reference"
             },
             {
                 "command": "extension.addDllReference",
-                "title": "DCE: Add Dll Reference "
+                "title": "DCE: Add Dll Reference"
             },
             {
                 "command": "extension.removeDllReference",
-                "title": "DCE: Remove Dll Reference "
+                "title": "DCE: Remove Dll Reference"
             }
         ],
         "menus": {

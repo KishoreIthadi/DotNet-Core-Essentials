@@ -4,14 +4,14 @@
 * [What is **DCE**?](#what-is-DCE?)
 * [Features](#features)
 * [Prerequisite](#prerequisites)
-* [Install the extension](#install-the-extension)
+* [Installing the extension](#install-the-extension)
     * [Visual studio code marketplace](#visual-studio-code-marketplace)
 * [How to Use DCE?](#How-To-Use-DCE)
-    * [Create New Project](#Create-New-Project)
+    * [Create/Debug/Run Projects](#Create/Debug/Run-Projects)
     * [Add/Remove Project Reference](#Add-Remove-Project-Reference)
     * [Add/Remove DLL Reference](#Add-Remove-DLL-Reference)
-    * [Nuget Packages](#Nuget-Packages)
-    * [Publish](#Publish)
+    * [Add/Remove Nuget packages](#Add/Remove-Nuget-packages)
+    * [Publish Project](#Publish-Project)
 * [License](#license)
 
 ---
@@ -63,7 +63,7 @@ You can install the **DotNet Core Essentials** from visual studio code Market Pl
 #### Visual Studio Code MarketPlace
 [![ Get from vscode marketplace](/images/DCEExt.png)](https://marketplace.visualstudio.com/items?itemName=kishoreithadi.dotnet-core-essentials)
 
-Note : For debuging and running the dotnet projects install C# extension
+Note: For debugging and running the dotnet projects install the C# extension
 
 [![ Get from vscode marketplace](/images/CSharp.png)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
 
@@ -73,35 +73,37 @@ Note : For debuging and running the dotnet projects install C# extension
 
 - #### Create/Debug/Run Projects
 
-![Alt Text](/images/createproject.gif)
+<!-- ![Alt Text](/images/createproject.gif) -->
      
----
-
-- #### Add Project/dll Reference
-
-![Alt Text](/images/addref.gif)
- 
 ---
 
 - #### Add/Remove Project Reference
 
-![Alt Text](/images/addref.gif)
+<!-- ![Alt Text](/images/addref.gif) -->
+ 
+---
+
+- #### Add/Remove DLL Reference
+
+<!-- ![Alt Text](/images/addref.gif) -->
  
 ---
 
 - #### Add/Remove dll Reference
 
-![Alt Text](/images/addref.gif)
+<!-- ![Alt Text](/images/addref.gif) -->
  
 ---
 
-- #### Add/remove Nuget packages
+- #### Add/Remove Nuget packages
 
-![Alt Text](/images/addref.gif)
+<!-- ![Alt Text](/images/addref.gif) -->
  
 ---
 
 - #### Publish Project
+
+<!-- ![Alt Text](/images/addref.gif) -->
 
 ---
 

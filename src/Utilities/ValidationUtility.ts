@@ -64,7 +64,7 @@ export class ValidationUtility {
             }
             return false;
         }
-        catch(exception) {
+        catch (exception) {
             return false;
         }
     }
@@ -92,7 +92,7 @@ export class ValidationUtility {
 
             }
         }
-        catch(exception) {
+        catch (exception) {
             return undefined;
         }
 
@@ -117,7 +117,7 @@ export class ValidationUtility {
             MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, []);
             return false;
         }
-        catch(exception) {
+        catch (exception) {
             MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, [])
             return false;
         }

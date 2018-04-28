@@ -53,12 +53,12 @@ export class AddRefCmd {
         referenceDTO.ReferenceType == DataSource.GetReferenceTypes()[0]
             ? referenceDTO.FileType = FileTypeEnum.Csproj
             : referenceDTO.FileType = FileTypeEnum.Dll;
-            console.log(DataSource.GetReferenceTypes()[0])
-            console.log(referenceDTO.ReferenceType)
+        console.log(DataSource.GetReferenceTypes()[0])
+        console.log(referenceDTO.ReferenceType)
 
         referenceDTO.FileType == FileTypeEnum.Csproj
             ? AddRefCmd.SolutionSelecter(referenceDTO)
-            : AddRefCmd.GetPaths(referenceDTO);      
+            : AddRefCmd.GetPaths(referenceDTO);
     }
 
     /**
@@ -225,7 +225,7 @@ export class AddRefCmd {
             referenceDTO.Path);
 
         // Displaying output if any error occurs.
-        if (addReference.stderr.byteLength > 0 ) {
+        if (addReference.stderr.byteLength > 0) {
             MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.Error, [UserOptionsEnum.ShowOutput])
                 .then(response => {
                     if (response == UserOptionsEnum.ShowOutput) {

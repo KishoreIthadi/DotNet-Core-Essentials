@@ -21,7 +21,7 @@ export class DataSource {
         // ['xUnit Test Project','xunit']
     ]);
     private static _referenceTypeList: string[] = ['Add Project Reference', 'Add Assembly Reference (.dll Reference)'];
-    private static _validationList: string[] = ['con', 'aux', 'prn', 'com1', 'new', 'lpt2', '', ' ', null,'console','web'];
+    private static _validationList: string[] = ['con', 'aux', 'prn', 'com1', 'new', 'lpt2', '', ' ', null, 'console', 'web'];
     private static _filterCsproj: { [name: string]: string[] } = { 'Project files(*.csproj)': ['csproj'] };
     private static _filterDLL: { [name: string]: string[] } = { 'Project files(*.dll,*.exe)': ['dll', 'exe'] };
     private static _npmReqList: string[] = ['angular', 'react', 'reactredux'];
