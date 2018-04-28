@@ -18,6 +18,7 @@ import { ProjectTypeEnum } from '../Enums/ProjectTypeEnum';
 
 import { DataSource } from '../DataSource';
 import { GenerateCmdDTO } from '../DTO/GenerateCmdDTO';
+import { UserOptionsEnum } from '../Enums/UserOptionsEnum';
 
 export class GenerateCmd {
 
@@ -153,7 +154,7 @@ export class GenerateCmd {
 
                     }
                     else {
-                        MessageUtility.ShowMessage(MessageTypeEnum.Warning, StringUtility.InvalidSolutionName, [])
+                        MessageUtility.ShowMessage(MessageTypeEnum.Warning, StringUtility.InvalidSolutionName, [UserOptionsEnum.TryAgain])
                             .then(() => {
                                 // Ask for sln name if previous one is invalid.
                                 GenerateCmd.ReadSlnName(GenerateCmdObj);
@@ -186,7 +187,7 @@ export class GenerateCmd {
 
                         }
                         else {
-                            MessageUtility.ShowMessage(MessageTypeEnum.Warning, StringUtility.InvalidProjectName, [])
+                            MessageUtility.ShowMessage(MessageTypeEnum.Warning, StringUtility.InvalidProjectName, [UserOptionsEnum.TryAgain])
                                 .then(() => {
                                     // Asks for app name if previous is invalid.
                                     GenerateCmd.ReadAppName(GenerateCmdObj);

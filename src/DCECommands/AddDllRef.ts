@@ -23,7 +23,7 @@ export class AddDllRef {
             referenceDTO.Path = referenceDTO.Path.substring(0, referenceDTO.Path.lastIndexOf(StringUtility.PathSeperator));
             MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.FormatString(StringUtility.PressBrowse, FileTypeEnum.Dll), [UserOptionsEnum.Browse])
                 .then(resp => {
-                    if (resp != StringUtility.Undefined) {
+                    if (resp == UserOptionsEnum.Browse) {
                         AddRefCmd.BrowseDllPath(referenceDTO);
                     }
                 })

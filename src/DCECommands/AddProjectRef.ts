@@ -30,7 +30,7 @@ export class AddProjectRef {
                             referenceDTO.SlnName = slnName;
                             MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.FormatString(StringUtility.PressBrowse, StringUtility.Project), [UserOptionsEnum.Browse])
                                 .then(resp => {
-                                    if (resp != StringUtility.Undefined) {
+                                  if (resp == UserOptionsEnum.Browse) {
                                         AddRefCmd.BrowseProject(referenceDTO);
                                     }
                                 })
