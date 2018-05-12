@@ -4,15 +4,15 @@ import * as vscode from 'vscode';
 export class StringUtility {
 
     public static PathSeperator = /^win/.test(process.platform) ? '\\' : '/';
-    
+
     public static WorkspaceEmpty: string = 'Workspace is empty. Open a folder';
     public static SelectWorkspaceFolder: string = 'Select the target workspace folder';
     public static NotProject: string = 'DCE: The selected csproj is not a core or standard framework';
     public static CliNotFound: string = 'Please ensure that dotnet core 2.0.3 or higher SDK is installed and added to environment variable path';
     public static CliVersionError: string = 'DCE: Need Core SDK 2.0.3 or higher';
     public static SelectFW: string = 'Select .Net framework';
-    public static InvalidProjectName: string = 'DCE: Invalid project name. Select close to try again';
-    public static InvalidSolutionName: string = 'DCE: Invalid solution name. Select close to try again';
+    public static InvalidProjectName: string = 'DCE: Invalid project name.';
+    public static InvalidSolutionName: string = 'DCE: Invalid solution name.';
     public static FolderExists: string = `DCE: A folder with same name already exists at {0}.`;
     public static SolutionExists: string = `DCE: A solution with same name already exists at {0}`;
     public static Undefined: string = 'undefined';
@@ -52,11 +52,24 @@ export class StringUtility {
     public static ProjectCreationSuccess: string = 'DCE: {0} created successfully';
     public static BrowseDLLPath: string = "DCE: Click 'Browse' to select .dll file";
     public static StartUpProjError: string = "DCE: Cannot set starup project since multiple folders are added to workspace";
-    public static SelectBuild: string = "DCE: Select csporj or sln to build";
-    public static SelectClean: string = "DCE: Select csporj or sln to clean";
+    public static SelectBuild: string = "DCE: Select csproj or sln to build";
+    public static SelectClean: string = "DCE: Select csproj or sln to clean";
     public static EnterNugetPackageName: string = "DCE: Enter the Nuget Package name";
-    public static SelectNugetPackage: string = "DCE:  Select csporj or sln for installing nuget package";
+    public static SelectNugetPackage: string = "DCE:  Select csproj or sln for installing nuget package";
     public static InvalidPackageName: string = 'DCE: Invalid package name';
+    public static PackageNotFound: string = 'DCE: No nuget package found';
+    public static ProjectRefNotFound: string = 'DCE: No project reference found';
+    public static SelectPackage: string = 'Select the package to remove';
+    public static SelectProject: string = 'Select the project to remove';
+    public static SelectCsproj: string = 'Select the Project';
+    public static RemovePackageSuccess: string = 'DCE: Package reference `{0}` removed';
+    public static PressBrowse: string = 'Press "Browse" to select destination {0} path';
+    public static Project: string = 'Project';
+    public static AssemblyRefNotFound: string = 'No Assembly reference found';
+    public static SelectDll: string = 'Select dll to remove reference';
+    public static RemoveDllSuccess: string = 'DCE: Dll reference `{0}` removed';
+
+
 
     public static FormatString(value, args) {
         args = typeof args === 'object' ? args : Array.prototype.slice.call(arguments, 1);

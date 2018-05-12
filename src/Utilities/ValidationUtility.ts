@@ -14,7 +14,7 @@ import { DataSource } from '../DataSource';
 export class ValidationUtility {
 
     public static ValidateSlnAndProjectName(name: any): boolean {
-        return /^[a-zA-Z0-9_ ]*$/.test(name) && !(DataSource.GetValidationList().indexOf(name) > -1);
+        return /^[a-zA-Z0-9_. ]*$/.test(name) && !(DataSource.GetValidationList().indexOf(name) > -1);
     }
 
     // To check whether dotnet core 2.x sdk is installed.
@@ -64,7 +64,7 @@ export class ValidationUtility {
             }
             return false;
         }
-        catch(exception) {
+        catch (exception) {
             return false;
         }
     }
@@ -92,7 +92,7 @@ export class ValidationUtility {
 
             }
         }
-        catch(exception) {
+        catch (exception) {
             return undefined;
         }
 
@@ -117,7 +117,7 @@ export class ValidationUtility {
             MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, []);
             return false;
         }
-        catch(exception) {
+        catch (exception) {
             MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.WorkspaceEmpty, [])
             return false;
         }

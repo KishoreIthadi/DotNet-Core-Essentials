@@ -1,21 +1,17 @@
-<p align="center">
-  <img src="images/icon.png"/>
-</p>
-
----
-
 # **DotNet Core Essentials**
 
 ## Table of Contents
 * [What is **DCE**?](#what-is-DCE?)
 * [Features](#features)
 * [Prerequisite](#prerequisites)
-* [Install the extension](#install-the-extension)
+* [Installing the extension](#install-the-extension)
     * [Visual studio code marketplace](#visual-studio-code-marketplace)
-* [How to Use DCE?](#how-to-use-DCE)
-    * [Create New Project](#Create-New-Project)
-    * [Add Reference](#Add-Reference)
-    * [Publish](#Publish)
+* [How to Use DCE?](#How-To-Use-DCE)
+    * [Create/Debug/Run Projects](#Create/Debug/Run-Projects)
+    * [Add/Remove Project Reference](#Add-Remove-Project-Reference)
+    * [Add/Remove DLL Reference](#Add-Remove-DLL-Reference)
+    * [Add/Remove Nuget packages](#Add/Remove-Nuget-packages)
+    * [Publish Project](#Publish-Project)
 * [License](#license)
 
 ---
@@ -38,7 +34,9 @@
     - ASP.NET Core with React.js and Redux
     - ASP.NET Core Web API
 
-- Add Project/dll Reference - `Ctrl+Alt+A`
+- Add Project/dll Reference
+
+- Remove Project/dll Reference
 
 - Publish Project - `Ctrl+Alt+P`
 
@@ -47,6 +45,8 @@
 - Clean Project/Solution
 
 - Build Project/Solution
+
+- Add/Remove Nuget Packages
 
 ---
 
@@ -63,13 +63,13 @@ You can install the **DotNet Core Essentials** from visual studio code Market Pl
 #### Visual Studio Code MarketPlace
 [![ Get from vscode marketplace](/images/DCEExt.png)](https://marketplace.visualstudio.com/items?itemName=kishoreithadi.dotnet-core-essentials)
 
-Note : For debuging and running the dotnet projects install C# extension
+Note: For debugging and running the dotnet projects install the C# extension
 
 [![ Get from vscode marketplace](/images/CSharp.png)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
 
 ---
 
-### **How to use DCE?**
+### **How To Use DCE**
 
 - #### Create/Debug/Run Projects
 
@@ -77,18 +77,28 @@ Note : For debuging and running the dotnet projects install C# extension
      
 ---
 
-- #### Add Project/dll Reference
+- #### Add/Remove Project Reference
 
-![Alt Text](/images/addref.gif)
+![Alt Text](/images/projectref.gif)
+ 
+---
+
+- #### Add/Remove DLL Reference
+
+![Alt Text](/images/dllref.gif)
+ 
+---
+
+- #### Add/Remove Nuget packages
+
+![Alt Text](/images/nuget.gif)
  
 ---
 
 - #### Publish Project
 
----
+![Alt Text](/images/publish.gif)
 
-- #### Adding Nuget Package
-     
 ---
 
 

@@ -2,7 +2,7 @@
     "name": "dotnet-core-essentials",
     "displayName": "Dotnet Core Essentials",
     "description": "Create, debug, run and publish .Net core/standard applications",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "KishoreIthadi",
     "author": {
         "name": "Kishore Ithadi",
@@ -29,12 +29,16 @@
     ],
     "activationEvents": [
         "onCommand:extension.createTemplate",
-        "onCommand:extension.addReference",
         "onCommand:extension.publish",
         "onCommand:extension.startup",
         "onCommand:extension.build",
         "onCommand:extension.clean",
-        "onCommand:extension.addNugetPackage"
+        "onCommand:extension.addNugetPackage",
+        "onCommand:extension.removeProjectReference",
+        "onCommand:extension.removeNugetPackage",
+        "onCommand:extension.addProjectReference",
+        "onCommand:extension.addDllReference",
+        "onCommand:extension.removeDllReference"
     ],
     "main": "./out/src/Extension",
     "contributes": {
@@ -42,10 +46,6 @@
             {
                 "command": "extension.createTemplate",
                 "key": "ctrl+alt+N"
-            },
-            {
-                "command": "extension.addReference",
-                "key": "ctrl+alt+A"
             },
             {
                 "command": "extension.publish",
@@ -60,10 +60,6 @@
             {
                 "command": "extension.createTemplate",
                 "title": "DCE: New Project"
-            },
-            {
-                "command": "extension.addReference",
-                "title": "DCE: Add Reference"
             },
             {
                 "command": "extension.publish",
@@ -84,12 +80,40 @@
             {
                 "command": "extension.addNugetPackage",
                 "title": "DCE: Add NugetPackage"
+            },
+            {
+                "command": "extension.removeProjectReference",
+                "title": "DCE: Remove Project Reference"
+            },
+            {
+                "command": "extension.removeNugetPackage",
+                "title": "DCE: Remove Nuget Package"
+            },
+            {
+                "command": "extension.addProjectReference",
+                "title": "DCE: Add Project Reference"
+            },
+            {
+                "command": "extension.addDllReference",
+                "title": "DCE: Add Dll Reference"
+            },
+            {
+                "command": "extension.removeDllReference",
+                "title": "DCE: Remove Dll Reference"
             }
         ],
         "menus": {
             "explorer/context": [
                 {
                     "command": "extension.build",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.addProjectReference",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.addDllReference",
                     "when": "resourceExtname == .csproj"
                 },
                 {
@@ -115,6 +139,18 @@
                 {
                     "command": "extension.addNugetPackage",
                     "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.removeProjectReference",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.removeNugetPackage",
+                    "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.removeDllReference",
+                    "when": "resourceExtname == .csproj"
                 }
             ]
         }
@@ -135,6 +171,7 @@
     "dependencies": {
         "fs-extra": "^4.0.2",
         "path": "^0.12.7",
+        "vsce": "^1.36.1",
         "xml-mapping": "^1.7.1"
     }
 }

@@ -9,25 +9,32 @@ import { StartUpProjectCmd } from './DCECommands/StartupProjectCmd';
 import { BuildCmd } from './DCECommands/BuildCmd';
 import { CleanCmd } from './DCECommands/CleanCmd';
 import { NugetPackageCmd } from './DCECommands/NugetPackageCmd';
+import { RemoveProjectReference } from './DCECommands/RemoveProjectReference';
+import { RemoveNugetPackage } from './DCECommands/RemoveNugetPackage'
+import { AddProjectRef } from './DCECommands/AddProjectRef';
+import { AddDllRef } from './DCECommands/AddDllRef';
+import { RemoveDllReference } from './DCECommands/RemoveDllReference';
 
 /**
 * Activating extension
 */
 export function activate(context: vscode.ExtensionContext) {
 
-  let addRefObj: AddRefCmd = new AddRefCmd();
   let generateCmdObj: GenerateCmd = new GenerateCmd();
   let publishCmdObj: PublishCmd = new PublishCmd();
   let startUpCmdObj: StartUpProjectCmd = new StartUpProjectCmd();
   let buildCmdObj: BuildCmd = new BuildCmd();
   let cleanCmdObj: CleanCmd = new CleanCmd();
   let nugetPackageCmdObj: NugetPackageCmd = new NugetPackageCmd();
+  let removeProjectReferenceObj: RemoveProjectReference = new RemoveProjectReference();
+  let removePackageObj: RemoveNugetPackage = new RemoveNugetPackage();
+  let addProjectRefObj: AddProjectRef = new AddProjectRef();
+  let addDllRefObj: AddDllRef = new AddDllRef();
+  let removeDllReferenceObj: RemoveDllReference = new RemoveDllReference();
 
   // Registering Commands.
   let createTemplateCmd: vscode.Disposable =
     vscode.commands.registerCommand('extension.createTemplate', generateCmdObj.ExecuteGenerateCmd);
-  let addReferenceCmd: vscode.Disposable =
-    vscode.commands.registerCommand('extension.addReference', addRefObj.ExecuteAddRefCmd);
   let startUpProjectCmd: vscode.Disposable =
     vscode.commands.registerCommand('extension.startup', (args) => { startUpCmdObj.ExecuteStartupCmd(args) });
   let publishCmd: vscode.Disposable =
@@ -39,10 +46,26 @@ export function activate(context: vscode.ExtensionContext) {
   let nugetPackageCmd: vscode.Disposable =
     vscode.commands.registerCommand('extension.addNugetPackage',
       (args) => { nugetPackageCmdObj.ExecuteAddNugetPackageCmd(args) });
+  let removeProjectReferenceCmd: vscode.Disposable =
+    vscode.commands.registerCommand('extension.removeProjectReference',
+      (args) => { removeProjectReferenceObj.ExecuteRemoveReferenceCmd(args) });
+  let removeDllReferenceCmd: vscode.Disposable =
+    vscode.commands.registerCommand('extension.removeDllReference',
+      (args) => { removeDllReferenceObj.ExecuteRemoveDllReferenceCmd(args) });
+  let removeNugetPackageCmd: vscode.Disposable =
+    vscode.commands.registerCommand('extension.removeNugetPackage',
+      (args) => { removePackageObj.ExecuteRemoveNugetPackageCmd(args) });
+  let addProjectRefCmd: vscode.Disposable =
+    vscode.commands.registerCommand('extension.addProjectReference',
+      (args) => { addProjectRefObj.ExecuteAddRef(args) });
+  let addDllRefCmd: vscode.Disposable =
+    vscode.commands.registerCommand('extension.addDllReference',
+      (args) => { addDllRefObj.ExecuteAddRef(args) });
 
   // Disposing the objects.
-  context.subscriptions.push(createTemplateCmd, addReferenceCmd, startUpProjectCmd,
-    publishCmd, buildCmd, cleanCmd, nugetPackageCmd);
+  context.subscriptions.push(createTemplateCmd, startUpProjectCmd,
+    publishCmd, buildCmd, cleanCmd, nugetPackageCmd, removeProjectReferenceCmd,
+    removeNugetPackageCmd, removeDllReferenceCmd, addProjectRefCmd, addDllRefCmd);
 }
 /**
 * Deactivating extension

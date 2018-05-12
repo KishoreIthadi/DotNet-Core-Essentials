@@ -29,10 +29,9 @@ export class AddRefCmd {
     constructor() {
     }
 
-    public ExecuteAddRefCmd(): void {
+    public ExecuteAddRefCmd(referenceDTO): void {
         if (ValidationUtility.WorkspaceValidation()) {
             let rootFolders = ValidationUtility.SelectRootPath();
-            let referenceDTO: AddReferenceDTO = new AddReferenceDTO();
             if (rootFolders.size > 1) {
                 // Select the workspace folder.
                 QuickPickUtility.ShowQuickPick(Array.from(rootFolders.keys()), StringUtility.SelectWorkspaceFolder)
@@ -51,19 +50,15 @@ export class AddRefCmd {
     }
     // Lists reference types.
     public static SelectReferenceType(referenceDTO) {
-        QuickPickUtility.ShowQuickPick(DataSource.GetReferenceTypes(), StringUtility.SelectRefType)
-            .then(selectedReferenceType => {
-                if (typeof selectedReferenceType != StringUtility.Undefined) {
+        referenceDTO.ReferenceType == DataSource.GetReferenceTypes()[0]
+            ? referenceDTO.FileType = FileTypeEnum.Csproj
+            : referenceDTO.FileType = FileTypeEnum.Dll;
+        console.log(DataSource.GetReferenceTypes()[0])
+        console.log(referenceDTO.ReferenceType)
 
-                    selectedReferenceType == DataSource.GetReferenceTypes()[0]
-                        ? referenceDTO.FileType = FileTypeEnum.Csproj
-                        : referenceDTO.FileType = FileTypeEnum.Dll;
-
-                    referenceDTO.FileType == FileTypeEnum.Csproj
-                        ? AddRefCmd.SolutionSelecter(referenceDTO)
-                        : AddRefCmd.GetPaths(referenceDTO);
-                }
-            });
+        referenceDTO.FileType == FileTypeEnum.Csproj
+            ? AddRefCmd.SolutionSelecter(referenceDTO)
+            : AddRefCmd.GetPaths(referenceDTO);
     }
 
     /**
@@ -180,7 +175,6 @@ export class AddRefCmd {
     * Copy Project to current working folder if doesn't exist.
     */
     public static BrowseProject(referenceDTO) {
-
         // Opening file explorer to select the project.
         FileExplorerUtility.OpenFile(DataSource.GetCsprojFilter())
             .then(referalFileUri => {
@@ -236,7 +230,7 @@ export class AddRefCmd {
                 .then(response => {
                     if (response == UserOptionsEnum.ShowOutput) {
                         OutputChannelUtility.outputChannel.show();
-                        OutputChannelUtility.outputChannel.appendLine(`${addReference.stderr.toString()}`);
+                        OutputChannelUtility.outputChannel.appendLine(`${addReference.stderr.toString()}${addReference.stdout.toString()}`);
                     }
                 })
 
