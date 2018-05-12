@@ -69,7 +69,7 @@ Note: For debugging and running the dotnet projects install the C# extension
 
 ---
 
-### **#How To Use DCE**
+### **How To Use DCE**
 
 - #### Create/Debug/Run Projects
 
