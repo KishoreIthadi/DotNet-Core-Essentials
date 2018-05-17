@@ -18,6 +18,7 @@ export class AddProjectRef {
             obj.ExecuteAddRefCmd(referenceDTO);
         }
         else {
+            let projName = args.fsPath.substring(args.fsPath.lastIndexOf(StringUtility.PathSeperator) + 1);
             referenceDTO.Path = args.fsPath.substring(0, args.fsPath.lastIndexOf(StringUtility.PathSeperator));
             referenceDTO.SourcePath = args.fsPath;
             referenceDTO.Path = referenceDTO.Path.substring(0, referenceDTO.Path.lastIndexOf(StringUtility.PathSeperator));
@@ -28,13 +29,8 @@ export class AddProjectRef {
                         if (typeof slnName != StringUtility.Undefined) {
                             referenceDTO.Path = SolutionsList.get(slnName);
                             referenceDTO.SlnName = slnName;
-                            MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.FormatString(StringUtility.PressBrowse, StringUtility.Project), [UserOptionsEnum.Browse])
-                                .then(resp => {
-                                  if (resp == UserOptionsEnum.Browse) {
-                                        AddRefCmd.BrowseProject(referenceDTO);
-                                    }
-                                })
-
+                            referenceDTO.FileType = FileTypeEnum.Csproj;
+                            AddRefCmd.BrowseProject(referenceDTO, projName);
                         }
                     });
             }
