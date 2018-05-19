@@ -53,8 +53,6 @@ export class AddRefCmd {
         referenceDTO.ReferenceType == DataSource.GetReferenceTypes()[0]
             ? referenceDTO.FileType = FileTypeEnum.Csproj
             : referenceDTO.FileType = FileTypeEnum.Dll;
-        console.log(DataSource.GetReferenceTypes()[0])
-        console.log(referenceDTO.ReferenceType)
 
         referenceDTO.FileType == FileTypeEnum.Csproj
             ? AddRefCmd.SolutionSelecter(referenceDTO)
@@ -111,36 +109,7 @@ export class AddRefCmd {
                             if (ValidationUtility.CheckCliVersion(sourcecsprojList.get(sourceCSprojName))) {
                                 if (referenceDTO.FileType != FileTypeEnum.Dll) {
                                     // Get the list of projects under the given path.
-                                    let destcsprojList: Map<string, string> = FileUtility.GetFilesbyExtension(referenceDTO.Path,
-                                        referenceDTO.FileType, new Map<string, string>());
-
-                                    // Adding browse option to the list.
-                                    destcsprojList.set(UserOptionsEnum.Browse, UserOptionsEnum.Browse);
-
-                                    // Removing the selected source project name to avoid circular dependency.
-                                    if (referenceDTO.FileType == FileTypeEnum.Csproj) {
-                                        destcsprojList.delete(sourceCSprojName);
-                                    }
-
-                                    QuickPickUtility.ShowQuickPick(Array.from(destcsprojList.keys()),
-                                        StringUtility.SelectDestinationCsproj)
-                                        .then(fileName => {
-                                            if (typeof fileName != StringUtility.Undefined) {
-                                                // Check if Browse option is selected.
-                                                if (fileName != UserOptionsEnum.Browse) {
-                                                    referenceDTO.DestinationPath = destcsprojList.get(fileName) + StringUtility.PathSeperator + fileName;
-                                                    referenceDTO.DLLName = fileName.substring(0, fileName.lastIndexOf('.'));
-                                                    // Check Whether the project selected is csproj or not.
-                                                    let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
-                                                    ValidationUtility.ValidateProjectType(DestCsprojJsonObj)
-                                                        ? AddRefCmd.AddProjectReference(referenceDTO)
-                                                        : MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, []);
-                                                }
-                                                else {
-                                                    AddRefCmd.BrowseProject(referenceDTO)
-                                                }
-                                            }
-                                        });
+                                    AddRefCmd.BrowseProject(referenceDTO, sourceCSprojName)
                                 }
                                 else {
                                     MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.BrowseDLLPath, [UserOptionsEnum.Browse])
@@ -174,36 +143,66 @@ export class AddRefCmd {
     /**
     * Copy Project to current working folder if doesn't exist.
     */
-    public static BrowseProject(referenceDTO) {
-        // Opening file explorer to select the project.
-        FileExplorerUtility.OpenFile(DataSource.GetCsprojFilter())
-            .then(referalFileUri => {
-                if (typeof referalFileUri != StringUtility.Undefined) {
-                    referenceDTO.DestinationPath = referalFileUri[0].fsPath;
-                    // Check Whether the project selected is csproj or not.
-                    let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
-                    if (ValidationUtility.ValidateProjectType(DestCsprojJsonObj)) {
+    public static BrowseProject(referenceDTO, sourceCSprojName) {
+        let destcsprojList: Map<string, string> = FileUtility.GetFilesbyExtension(referenceDTO.Path,
+            referenceDTO.FileType, new Map<string, string>());
 
-                        // Circular Dependency check.
-                        if (AddRefCmd.CircularDependencyCheck(referenceDTO)) {
-                            MessageUtility.ShowMessage(MessageTypeEnum.Error,
-                                StringUtility.CircularDepError, []);
-                        }
-                        // Copy project folder to current root folder if no circular dependency exists.
-                        else {
-                            AddRefCmd.AddProjectReference(referenceDTO);
-                        }
+        // Adding browse option to the list.
+        destcsprojList.set(UserOptionsEnum.Browse, UserOptionsEnum.Browse);
+
+        // Removing the selected source project name to avoid circular dependency.
+        if (referenceDTO.FileType == FileTypeEnum.Csproj) {
+            destcsprojList.delete(sourceCSprojName);
+        }
+
+        QuickPickUtility.ShowQuickPick(Array.from(destcsprojList.keys()),
+            StringUtility.SelectDestinationCsproj)
+            .then(fileName => {
+                if (typeof fileName != StringUtility.Undefined) {
+                    // Check if Browse option is selected.
+                    if (fileName != UserOptionsEnum.Browse) {
+                        referenceDTO.DestinationPath = destcsprojList.get(fileName) + StringUtility.PathSeperator + fileName;
+                        referenceDTO.DLLName = fileName.substring(0, fileName.lastIndexOf('.'));
+                        // Check Whether the project selected is csproj or not.
+                        let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
+                        ValidationUtility.ValidateProjectType(DestCsprojJsonObj)
+                            ? AddRefCmd.AddProjectReference(referenceDTO)
+                            : MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, []);
                     }
-                    // Error if the project selected is not the valid project.
                     else {
-                        MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, [])
+                        // Opening file explorer to select the project.
+                        FileExplorerUtility.OpenFile(DataSource.GetCsprojFilter())
+                            .then(referalFileUri => {
+                                if (typeof referalFileUri != StringUtility.Undefined) {
+                                    referenceDTO.DestinationPath = referalFileUri[0].fsPath;
+                                    // Check Whether the project selected is csproj or not.
+                                    let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
+                                    if (ValidationUtility.ValidateProjectType(DestCsprojJsonObj)) {
+
+                                        // Circular Dependency check.
+                                        if (AddRefCmd.CircularDependencyCheck(referenceDTO)) {
+                                            MessageUtility.ShowMessage(MessageTypeEnum.Error,
+                                                StringUtility.CircularDepError, []);
+                                        }
+                                        // Copy project folder to current root folder if no circular dependency exists.
+                                        else {
+                                            AddRefCmd.AddProjectReference(referenceDTO);
+                                        }
+                                    }
+                                    // Error if the project selected is not the valid project.
+                                    else {
+                                        MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, [])
+                                    }
+                                }
+                                // Error if the file is not selected when the windows explorer is opened.
+                                else {
+                                    MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.UnspecifiedFilePath, []);
+                                }
+                            });
                     }
-                }
-                // Error if the file is not selected when the windows explorer is opened.
-                else {
-                    MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.UnspecifiedFilePath, []);
                 }
             });
+
     }
 
     /**
