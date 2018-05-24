@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 export class StringUtility {
 
     public static PathSeperator = /^win/.test(process.platform) ? '\\' : '/';
-
+    public static reverse = /^win/.test(process.platform) ? '/' : '\\';
     public static WorkspaceEmpty: string = 'Workspace is empty. Open a folder';
     public static SelectWorkspaceFolder: string = 'Select the target workspace folder';
     public static NotProject: string = 'DCE: The selected csproj is not a core or standard framework';

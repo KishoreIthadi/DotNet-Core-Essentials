@@ -277,7 +277,7 @@ export class AddRefCmd {
             // Reading source csproj file and converting it to json object.
             let jsonData: any = XMLMapping.load(fs.readFileSync(referenceDTO.SourcePath).toString(), { comments: false });
 
-            let relative = path.relative(referenceDTO.SourcePath.substring(0, referenceDTO.SourcePath.lastIndexOf('\\')).replace(/\\/g, '/'), referenceDTO.DestinationPath.replace(/\\/g, '/'));
+            let relative = path.relative(referenceDTO.SourcePath.substring(0, referenceDTO.SourcePath.lastIndexOf(StringUtility.PathSeperator)).replace(/\\/g, StringUtility.reverse), referenceDTO.DestinationPath.replace(/\\/g, StringUtility.reverse));
             // Getting JsonObjects. 
             let referenceJsonObj: any = DataSource.GetJsonObject(referenceDTO.DLLName
                 .substring(0, referenceDTO.DLLName.lastIndexOf('.')), relative, true);
