@@ -1,6 +1,14 @@
 # Dotnet Core Essentials Change Log
 
-## 0.0.3 - 2018-03-04
+## 0.0.5 - 2018-05-25
+
+### Bug Fixes
+
+- Fixed linux platform related issues
+
+## 0.0.4 - 2018-04-28
+
+### Added
 
 - Allowed '.' in project names the same as the cli
 - Implemented remove dll/project reference
