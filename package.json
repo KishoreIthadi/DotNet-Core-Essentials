@@ -243,15 +243,15 @@
     },
     "devDependencies": {
         "@types/mocha": "^2.2.32",
-        "mocha": "^2.3.3",
-        "vscode": "^1.1.8",
         "@types/node": "^6.0.40",
-        "typescript": "^2.0.3"
+        "mocha": "^2.3.3",
+        "typescript": "^2.0.3",
+        "vscode": "^1.1.28"
     },
     "dependencies": {
         "fs-extra": "^4.0.2",
         "path": "^0.12.7",
-        "vsce": "^1.36.1",
+        "vsce": "^1.54.0",
         "xml-mapping": "^1.7.1"
     }
 }
