@@ -1,7 +1,8 @@
+'use strict'
+
 import * as vscode from 'vscode';
 
 import { ChildProcessUtility } from './ChildProcessUtility';
-import { QuickPickUtility } from './QuickPickUtility';
 import { StringUtility } from './StringUtility';
 import { MessageUtility } from './MessageUtility';
 
@@ -122,4 +123,9 @@ export class ValidationUtility {
             return false;
         }
     }
+
+    // Used by Add Command
+    // public static FirtLetterUpper(string) {
+    //     return string.charAt(0).toUpperCase() + string.slice(1);
+    // }
 }

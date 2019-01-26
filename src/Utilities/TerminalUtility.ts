@@ -1,3 +1,5 @@
+'use strict'
+
 import * as vscode from 'vscode';
 import { Terminal } from 'vscode';
 

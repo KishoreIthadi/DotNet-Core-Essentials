@@ -1,6 +1,5 @@
 'use strict';
 
-import * as vscode from 'vscode';
 import * as fs from 'fs';
 
 import { ChildProcessUtility } from './ChildProcessUtility';
@@ -40,19 +39,20 @@ export class ProjectCreationUtility {
         // Creating class library for dotnet core framework.
         if (GenerateCmdObj.FrameWork == FrameworkTypeEnum.NetCore && GenerateCmdObj.AppType == ProjectTypeEnum.Classlib) {
             ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
-                ['new', GenerateCmdObj.AppType, '-o', GenerateCmdObj.AppName, '-f', GenerateCmdObj.Version],
+                ['new', GenerateCmdObj.AppType, '-lang',GenerateCmdObj.Language, '-o', GenerateCmdObj.AppName, '-f', GenerateCmdObj.Version],
                 GenerateCmdObj.SolutionPath);
         }
         else {
             // Application creator.
             ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
-                ['new', GenerateCmdObj.AppType, '-o', GenerateCmdObj.AppName], GenerateCmdObj.SolutionPath);
+                ['new', GenerateCmdObj.AppType, '-lang',GenerateCmdObj.Language, '-o', GenerateCmdObj.AppName], GenerateCmdObj.SolutionPath);
         }
 
-        let filepath: string = GenerateCmdObj.ProjectPath + '/' + GenerateCmdObj.AppName + FileTypeEnum.Csproj;
+        let filepath: string = GenerateCmdObj.ProjectPath + '/' + GenerateCmdObj.AppName +
+         DataSource.GetFileTypeByProject(GenerateCmdObj.Language);
 
         // Adding csproj to solution.
-        let ref = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
+        ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet,
             ['sln', GenerateCmdObj.SlnName, 'add', filepath], GenerateCmdObj.SolutionPath);
 
         if (DataSource.GetNPMReqList().indexOf(GenerateCmdObj.AppType) > -1) {

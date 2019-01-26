@@ -2,7 +2,7 @@
     "name": "dotnet-core-essentials",
     "displayName": "Dotnet Core Essentials",
     "description": "Create, debug, run and publish .Net core/standard applications",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "KishoreIthadi",
     "author": {
         "name": "Kishore Ithadi",
@@ -151,6 +151,86 @@
                 {
                     "command": "extension.removeDllReference",
                     "when": "resourceExtname == .csproj"
+                },
+                {
+                    "command": "extension.build",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.addProjectReference",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.addDllReference",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.clean",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.startup",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.publish",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.addNugetPackage",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.removeProjectReference",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.removeNugetPackage",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.removeDllReference",
+                    "when": "resourceExtname == .vbproj"
+                },
+                {
+                    "command": "extension.build",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.addProjectReference",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.addDllReference",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.clean",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.startup",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.publish",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.addNugetPackage",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.removeProjectReference",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.removeNugetPackage",
+                    "when": "resourceExtname == .fsproj"
+                },
+                {
+                    "command": "extension.removeDllReference",
+                    "when": "resourceExtname == .fsproj"
                 }
             ]
         }

@@ -1,3 +1,5 @@
+'use strict'
+
 import { spawnSync } from 'child_process';
 
 export class ChildProcessUtility {

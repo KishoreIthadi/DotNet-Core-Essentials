@@ -2,7 +2,6 @@
 
 import * as vscode from 'vscode';
 
-import { AddRefCmd } from './DCECommands/AddRefCmd';
 import { GenerateCmd } from './DCECommands/GenerateCmd';
 import { PublishCmd } from './DCECommands/PublishCmd';
 import { StartUpProjectCmd } from './DCECommands/StartupProjectCmd';
@@ -14,6 +13,7 @@ import { RemoveNugetPackage } from './DCECommands/RemoveNugetPackage'
 import { AddProjectRef } from './DCECommands/AddProjectRef';
 import { AddDllRef } from './DCECommands/AddDllRef';
 import { RemoveDllReference } from './DCECommands/RemoveDllReference';
+// import { AddClassCmd } from './DCECommands/AddClassCmd';
 
 /**
 * Activating extension
@@ -31,6 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
   let addProjectRefObj: AddProjectRef = new AddProjectRef();
   let addDllRefObj: AddDllRef = new AddDllRef();
   let removeDllReferenceObj: RemoveDllReference = new RemoveDllReference();
+  // let addClassObj: AddClassCmd = new AddClassCmd();
 
   // Registering Commands.
   let createTemplateCmd: vscode.Disposable =
@@ -61,6 +62,9 @@ export function activate(context: vscode.ExtensionContext) {
   let addDllRefCmd: vscode.Disposable =
     vscode.commands.registerCommand('extension.addDllReference',
       (args) => { addDllRefObj.ExecuteAddRef(args) });
+  // let addClassCmd: vscode.Disposable =
+  //   vscode.commands.registerCommand('extension.addClass',
+  //     (args) => { addClassObj.ExecuteAddClassCmd(args) });
 
   // Disposing the objects.
   context.subscriptions.push(createTemplateCmd, startUpProjectCmd,

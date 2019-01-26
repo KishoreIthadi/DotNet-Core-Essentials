@@ -1,13 +1,15 @@
-import * as fs from 'fs'
-import * as vscode from 'vscode'
+'use strict'
+
+import * as fs from 'fs';
+import * as vscode from 'vscode';
 import * as XMLMapping from 'xml-mapping';
 
 import { StringUtility } from '../Utilities/StringUtility';
-import { ValidationUtility } from '../Utilities/ValidationUtility'
-import { QuickPickUtility } from '../Utilities/QuickPickUtility'
-import { MessageTypeEnum } from '../Enums/MessageTypeEnum'
-import { MessageUtility } from '../Utilities/MessageUtility'
-import { FileUtility } from '../Utilities/FileUtility'
+import { ValidationUtility } from '../Utilities/ValidationUtility';
+import { QuickPickUtility } from '../Utilities/QuickPickUtility';
+import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
+import { MessageUtility } from '../Utilities/MessageUtility';
+import { FileUtility } from '../Utilities/FileUtility';
 import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { ProjectTypeEnum } from '../Enums/ProjectTypeEnum';
 
@@ -48,7 +50,7 @@ export class StartUpProjectCmd {
 
                 if (vscode.workspace.workspaceFolders.length == 1) {
                     rootPath = vscode.workspace.rootPath;
-                    StartUpProjectCmd.SetSatrtup(csprojName, csprojfolderPath, rootPath);
+                    StartUpProjectCmd.SetStartup(csprojName, csprojfolderPath, rootPath);
                 }
                 // else {
                 //     let index = 0;
@@ -67,7 +69,7 @@ export class StartUpProjectCmd {
                 //         }
                 //     }
 
-                //     StartUpProjectCmd.SetSatrtup(csprojName, csprojfolderPath, rootPath);
+                //     AddStartUpProjectCmd.SetStartup(csprojName, csprojfolderPath, rootPath);
 
                 // }
             }
@@ -77,7 +79,7 @@ export class StartUpProjectCmd {
     public static SelectProject(rootPath) {
         // Get the list of projects under given path.
         let csprojList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
-            FileTypeEnum.Csproj, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
 
         if (csprojList.size > 0) {
             // Display .csproj files under selected path.
@@ -89,7 +91,7 @@ export class StartUpProjectCmd {
 
                         let csprojPath = csprojList.get(csprojName);
 
-                        StartUpProjectCmd.SetSatrtup(csprojName, csprojPath, rootPath);
+                        StartUpProjectCmd.SetStartup(csprojName, csprojPath, rootPath);
                     }
                 });
         }
@@ -99,7 +101,7 @@ export class StartUpProjectCmd {
         }
     }
 
-    public static SetSatrtup(csprojName: string, csprojPath: string, rootPath: string) {
+    public static SetStartup(csprojName: string, csprojPath: string, rootPath: string) {
 
         // Deleting all the .vscode folders in workspace
         // for (let i = 0; i < vscode.workspace.workspaceFolders.length; i++) {
@@ -112,9 +114,10 @@ export class StartUpProjectCmd {
 
         if (typeof csprojName != StringUtility.Undefined) {
             // Capturing csproj path.
-            let completecsprojPath = csprojPath + StringUtility.PathSeperator + csprojName;
+            let completecsprojPath = csprojPath + StringUtility.PathBackSlash + csprojName;
+            let projectData = fs.readFileSync(completecsprojPath).toString().replace("\ufeff", "");;
             // Converting the file to csproj.
-            let csprojJsonData = XMLMapping.tojson(fs.readFileSync(completecsprojPath).toString())
+            let csprojJsonData = XMLMapping.load(projectData, { comments: false })
             // Validating csproj.
             if (ValidationUtility.ValidateProjectType(csprojJsonData)) {
                 // Capturing the type of application.
@@ -122,7 +125,7 @@ export class StartUpProjectCmd {
                 // Validting the path. 
                 if (typeof projectType != StringUtility.Undefined) {
                     // Deriving paths.
-                    let dllPath = csprojPath + StringUtility.RelativeDllPath + csprojName.substring(0, csprojName.lastIndexOf('.')) + FileTypeEnum.Dll;
+                    let dllPath = csprojPath + StringUtility.FormatString(StringUtility.RelativeDllPath, csprojJsonData.Project.PropertyGroup.TargetFramework["$t"]) + csprojName.substring(0, csprojName.lastIndexOf('.')) + FileTypeEnum.Dll;
                     let relativeCSprojpath = completecsprojPath.substring(rootPath.length).replace(/\\/g, '/');
                     let relativeDllPath = dllPath.substring(rootPath.length).replace(/\\/g, '/');
                     let workDirPath = csprojPath.substring(rootPath.length).replace(/\\/g, '/');

@@ -1,3 +1,5 @@
+'use strict'
+
 export enum MessageTypeEnum {
     Error = 1,
     Info = 2,

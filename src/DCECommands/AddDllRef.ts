@@ -1,3 +1,5 @@
+'use strict';
+
 import { AddReferenceDTO } from '../DTO/AddReferenceDTO';
 import { MessageUtility } from '../Utilities/MessageUtility';
 import { StringUtility } from '../Utilities/StringUtility';
@@ -15,7 +17,6 @@ export class AddDllRef {
             referenceDTO.ReferenceType = DataSource.GetReferenceTypes()[1];
             obj.ExecuteAddRefCmd(referenceDTO);
         }
-
         else {
             referenceDTO.CSProjName = args.fsPath.substring(args.fsPath.lastIndexOf(StringUtility.PathSeperator) + 1);
             referenceDTO.Path = args.fsPath.substring(0, args.fsPath.lastIndexOf(StringUtility.PathSeperator));

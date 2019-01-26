@@ -1,6 +1,5 @@
 'use strict';
 
-import * as vscode from 'vscode';
 import * as fs from 'fs';
 
 import { ChildProcessUtility } from '../Utilities/ChildProcessUtility';
@@ -16,18 +15,11 @@ import { CLITypeEnum } from '../Enums/CLITypeEnum';
 import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
 import { UserOptionsEnum } from '../Enums/UserOptionsEnum';
-
-import { AddReferenceDTO } from '../DTO/AddReferenceDTO';
 import { DataSource } from '../DataSource';
-
-import * as fs_extra from 'fs-extra';
 import * as XMLMapping from 'xml-mapping';
 import * as path from 'path';
 
 export class AddRefCmd {
-
-    constructor() {
-    }
 
     public ExecuteAddRefCmd(referenceDTO): void {
         if (ValidationUtility.WorkspaceValidation()) {
@@ -51,10 +43,10 @@ export class AddRefCmd {
     // Lists reference types.
     public static SelectReferenceType(referenceDTO) {
         referenceDTO.ReferenceType == DataSource.GetReferenceTypes()[0]
-            ? referenceDTO.FileType = FileTypeEnum.Csproj
+            ? referenceDTO.FileType = FileTypeEnum.Proj
             : referenceDTO.FileType = FileTypeEnum.Dll;
 
-        referenceDTO.FileType == FileTypeEnum.Csproj
+        referenceDTO.FileType == FileTypeEnum.Proj
             ? AddRefCmd.SolutionSelecter(referenceDTO)
             : AddRefCmd.GetPaths(referenceDTO);
     }
@@ -90,7 +82,7 @@ export class AddRefCmd {
 
         // Get the list of projects under given path.
         let sourcecsprojList: Map<string, string> = FileUtility.GetFilesbyExtension(referenceDTO.Path,
-            FileTypeEnum.Csproj, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
 
         if (sourcecsprojList.size > 0) {
 
@@ -100,10 +92,10 @@ export class AddRefCmd {
                 .then(sourceCSprojName => {
                     if (typeof sourceCSprojName != StringUtility.Undefined) {
 
-                        referenceDTO.SourcePath = sourcecsprojList.get(sourceCSprojName) + StringUtility.PathSeperator + sourceCSprojName;
+                        referenceDTO.SourcePath = sourcecsprojList.get(sourceCSprojName) + StringUtility.PathBackSlash + sourceCSprojName;
                         referenceDTO.CSProjName = sourceCSprojName.substring(0, sourceCSprojName.lastIndexOf('.'));
                         // Check whether the project is valid project or not.
-                        let SourceCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.SourcePath).toString(), { comments: false });
+                        let SourceCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.SourcePath).toString(), { comments: false, nested: true });
                         if (ValidationUtility.ValidateProjectType(SourceCsprojJsonObj)) {
                             // Checking for dotnet 2.x cli version.
                             if (ValidationUtility.CheckCliVersion(sourcecsprojList.get(sourceCSprojName))) {
@@ -144,14 +136,15 @@ export class AddRefCmd {
     * Copy Project to current working folder if doesn't exist.
     */
     public static BrowseProject(referenceDTO, sourceCSprojName) {
+        referenceDTO.FileType = sourceCSprojName.substring(sourceCSprojName.lastIndexOf('.'));
         let destcsprojList: Map<string, string> = FileUtility.GetFilesbyExtension(referenceDTO.Path,
-            referenceDTO.FileType, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
 
         // Adding browse option to the list.
         destcsprojList.set(UserOptionsEnum.Browse, UserOptionsEnum.Browse);
 
         // Removing the selected source project name to avoid circular dependency.
-        if (referenceDTO.FileType == FileTypeEnum.Csproj) {
+        if (referenceDTO.FileType !== FileTypeEnum.Dll) {
             destcsprojList.delete(sourceCSprojName);
         }
 
@@ -164,7 +157,10 @@ export class AddRefCmd {
                         referenceDTO.DestinationPath = destcsprojList.get(fileName) + StringUtility.PathSeperator + fileName;
                         referenceDTO.DLLName = fileName.substring(0, fileName.lastIndexOf('.'));
                         // Check Whether the project selected is csproj or not.
-                        let DestCsprojJsonObj: any = XMLMapping.load(fs.readFileSync(referenceDTO.DestinationPath).toString());
+                        let DestCsprojJsonObj: any;
+                        let cleanedString = fs.readFileSync(referenceDTO.DestinationPath).toString().replace("\ufeff", "");
+                        DestCsprojJsonObj = XMLMapping.tojson(cleanedString, { comments: false, nested: true });
+
                         ValidationUtility.ValidateProjectType(DestCsprojJsonObj)
                             ? AddRefCmd.AddProjectReference(referenceDTO)
                             : MessageUtility.ShowMessage(MessageTypeEnum.Error, StringUtility.NotProject, []);

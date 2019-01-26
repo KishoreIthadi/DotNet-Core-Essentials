@@ -1,15 +1,14 @@
-import * as vscode from 'vscode';
-
+'use strict'
 
 export class StringUtility {
 
     public static PathSeperator = /^win/.test(process.platform) ? '\\' : '/';
     // separator oppsite to pathseperator to deal with linux
     public static PathBackSlash = /^win/.test(process.platform) ? '/' : '\\';
-    public static WorkspaceEmpty: string = 'Workspace is empty. Open a folder';
+    public static WorkspaceEmpty: string = 'DCE: Workspace is empty. Open a folder';
     public static SelectWorkspaceFolder: string = 'Select the target workspace folder';
-    public static NotProject: string = 'DCE: The selected csproj is not a core or standard framework';
-    public static CliNotFound: string = 'Please ensure that dotnet core 2.0.3 or higher SDK is installed and added to environment variable path';
+    public static NotProject: string = 'DCE: The selected project is not a core or standard framework';
+    public static CliNotFound: string = 'DCE: Please ensure that dotnet core 2.0.3 or higher SDK is installed and added to environment variable path';
     public static CliVersionError: string = 'DCE: Need Core SDK 2.0.3 or higher';
     public static SelectFW: string = 'Select .Net framework';
     public static InvalidProjectName: string = 'DCE: Invalid project name.';
@@ -39,7 +38,7 @@ export class StringUtility {
     public static PublishExists: string = "DCE: A folder with 'PublishOutput' already exists";
     public static StartupError: string = 'DCE: Cannot add this project as a startup project';
     public static StartupProject: string = 'Select the startup project';
-    public static RelativeDllPath: string = StringUtility.PathSeperator + 'bin' + StringUtility.PathSeperator + 'Debug' + StringUtility.PathSeperator + 'netcoreapp2.0' + StringUtility.PathSeperator;
+    public static RelativeDllPath: string = StringUtility.PathSeperator +'bin' + StringUtility.PathSeperator + 'Debug' + StringUtility.PathSeperator + '{0}' + StringUtility.PathSeperator;
     public static RelativeVscodePath: string = StringUtility.PathSeperator + '.vscode';
     public static LaunchPath: string = StringUtility.PathSeperator + '.vscode' + StringUtility.PathSeperator + 'launch.json';
     public static TasksPath: string = StringUtility.PathSeperator + '.vscode' + StringUtility.PathSeperator + 'tasks.json';
@@ -66,11 +65,13 @@ export class StringUtility {
     public static RemovePackageSuccess: string = 'DCE: Package reference `{0}` removed';
     public static PressBrowse: string = 'Press "Browse" to select destination {0} path';
     public static Project: string = 'Project';
-    public static AssemblyRefNotFound: string = 'No Assembly reference found';
+    public static AssemblyRefNotFound: string = 'DCE: No Assembly reference found';
     public static SelectDll: string = 'Select dll to remove reference';
     public static RemoveDllSuccess: string = 'DCE: Dll reference `{0}` removed';
-
-
+    public static ClassAlreadyExists: string = 'DCE: class already exist';
+    public static EnterClassName: string = 'Enter class name';
+    public static ClassCreated: string = 'DCE: class created successfully';
+    public static SelectLanguage: string = 'Select language';
 
     public static FormatString(value, args) {
         args = typeof args === 'object' ? args : Array.prototype.slice.call(arguments, 1);
@@ -154,7 +155,7 @@ export class StringUtility {
         "version": "2.0.0",
         "tasks": [
             {
-                "taskName": "build",
+                "label": "build",
                 "command": "dotnet",
                 "type": "process",
                 "args": [
@@ -165,4 +166,14 @@ export class StringUtility {
             }
         ]
     }`;
+
+    //     public static ClassContent = `namespace {0}
+    //     {
+    //         public class {1}
+    //         {
+    //             public {2}()
+    //             {
+    //             }
+    //         }
+    //     }`
 }

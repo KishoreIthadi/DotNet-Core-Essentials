@@ -1,6 +1,5 @@
 'use strict';
 
-import * as vscode from 'vscode';
 import * as fs from 'fs';
 
 import { ChildProcessUtility } from '../Utilities/ChildProcessUtility';
@@ -59,7 +58,7 @@ export class PublishCmd {
      */
     public static GetProjectPath(rootPath) {
         let csprojNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
-            FileTypeEnum.Csproj, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
 
         if (csprojNameNPathList.size > 0) {
             QuickPickUtility.ShowQuickPick(Array.from(csprojNameNPathList.keys()),
