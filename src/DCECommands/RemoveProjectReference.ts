@@ -1,8 +1,5 @@
 'use strict'
 
-import * as vscode from 'vscode';
-import * as fs from 'fs';
-
 import { ChildProcessUtility } from '../Utilities/ChildProcessUtility';
 import { FileUtility } from '../Utilities/FileUtility';
 import { MessageUtility } from '../Utilities/MessageUtility';
@@ -14,7 +11,6 @@ import { GetReferenceUtility } from '../Utilities/GetReferenceUtility'
 import { CLITypeEnum } from '../Enums/CLITypeEnum';
 import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
-
 
 export class RemoveProjectReference {
     public ExecuteRemoveReferenceCmd(args) {
@@ -43,12 +39,11 @@ export class RemoveProjectReference {
             rootPath = args.fsPath.substring(0, args.fsPath.lastIndexOf(StringUtility.PathSeperator))
             RemoveProjectReference.RemoveReference(args.fsPath, rootPath)
         }
-
     }
 
     public static GetCsprojList(rootPath) {
         let csprojNameList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
-            FileTypeEnum.Csproj, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
         QuickPickUtility.ShowQuickPick(Array.from(csprojNameList.keys()), StringUtility.SelectCsproj)
             .then(response => {
                 if (typeof response != StringUtility.Undefined) {

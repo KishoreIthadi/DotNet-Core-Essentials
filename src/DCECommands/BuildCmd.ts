@@ -1,3 +1,5 @@
+'use strict';
+
 import { FileUtility } from '../Utilities/FileUtility';
 import { MessageUtility } from '../Utilities/MessageUtility';
 import { QuickPickUtility } from '../Utilities/QuickPickUtility';
@@ -6,13 +8,7 @@ import { ValidationUtility } from '../Utilities/ValidationUtility';
 
 import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
-
-import { ChildProcessUtility } from '../Utilities/ChildProcessUtility';
-import { CLITypeEnum } from '../Enums/CLITypeEnum';
-import { OutputChannelUtility } from '../Utilities/OutputChannelUtility';
 import { TerminalUtility } from '../Utilities/TerminalUtility';
-
-import * as vscode from 'vscode';
 
 export class BuildCmd {
 
@@ -49,7 +45,7 @@ export class BuildCmd {
     public static ValidateProject(rootPath) {
 
         let csprojNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
-            FileTypeEnum.Csproj, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
 
         let slnNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
             FileTypeEnum.SLN, new Map<string, string>());

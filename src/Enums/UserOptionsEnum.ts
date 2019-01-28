@@ -1,3 +1,5 @@
+'use strict'
+
 export enum UserOptionsEnum {
     Yes = 'Yes',
     No = 'No',

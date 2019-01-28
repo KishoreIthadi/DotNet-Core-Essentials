@@ -1,3 +1,5 @@
+'use strict'
+
 export enum ProjectTypeEnum {
     Console = "Exe",
     WebApp = "Microsoft.NET.Sdk.Web",

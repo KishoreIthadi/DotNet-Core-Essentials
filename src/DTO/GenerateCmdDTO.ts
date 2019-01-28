@@ -1,3 +1,4 @@
+'use strict'
 export class GenerateCmdDTO {
     public FrameWork: string;
     public AppName: string;
@@ -8,4 +9,5 @@ export class GenerateCmdDTO {
     public ProjectPath: string;
     public IsSlnExists: boolean = false;
     public RootPath: string;
+    public Language: string;
 }

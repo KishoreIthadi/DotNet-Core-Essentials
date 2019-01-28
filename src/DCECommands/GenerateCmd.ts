@@ -1,6 +1,5 @@
 'use strict';
 
-import * as vscode from 'vscode';
 import * as fs from 'fs';
 
 import { FileUtility } from '../Utilities/FileUtility';
@@ -55,39 +54,74 @@ export class GenerateCmd {
                 if (typeof frameWork != StringUtility.Undefined) {
 
                     GenerateCmdObj.FrameWork = frameWork;
+                    GenerateCmd.SelectLangugae(GenerateCmdObj);
+                }
+            });
+    }
+
+    private static SelectLangugae(GenerateCmdObj) {
+        // Lists Framework types.
+        QuickPickUtility
+            .ShowQuickPick(DataSource.GetLanguageList(), StringUtility.SelectLanguage)
+            .then(language => {
+                if (typeof language != StringUtility.Undefined) {
+
+                    GenerateCmdObj.Language = language;
                     GenerateCmd.SelectVersion(GenerateCmdObj);
                 }
             });
     }
 
     private static SelectVersion(GenerateCmdObj: GenerateCmdDTO) {
-        let versionsMap: Map<string, string> = DataSource.GetVersions(GenerateCmdObj.FrameWork);
+        if (GenerateCmdObj.FrameWork !== FrameworkTypeEnum.NetCore) {
+            GenerateCmdObj.AppType = ProjectTypeEnum.Classlib;
+            GenerateCmd.SlnFinder(GenerateCmdObj);
+        }
+        else {
+            GenerateCmdObj.Version = DataSource.GetVersion(GenerateCmdObj.RootPath);
+            GenerateCmd.SelectApplicationType(GenerateCmdObj);
+        }
+        // let versionsMap: Map<string, string> = DataSource.GetVersions(GenerateCmdObj.FrameWork, GenerateCmdObj.RootPath);
         // Lists available versions.
-        QuickPickUtility
-            .ShowQuickPick(Array.from(versionsMap.keys()), StringUtility.SelectVersion)
-            .then(fwVersion => {
-                if (typeof fwVersion != StringUtility.Undefined) {
-                    GenerateCmdObj.Version = versionsMap.get(fwVersion);
-                    if (GenerateCmdObj.FrameWork == FrameworkTypeEnum.NetStandard) {
-                        GenerateCmdObj.AppType = ProjectTypeEnum.Classlib;
-                        GenerateCmd.SlnFinder(GenerateCmdObj);
-                    }
-                    else {
-                        GenerateCmd.SelectApplicationType(GenerateCmdObj);
-                    }
-                }
-            });
+        // QuickPickUtility
+        //     .ShowQuickPick(Array.from(versionsMap.keys()), StringUtility.SelectVersion)
+        //     .then(fwVersion => {
+        //         if (typeof fwVersion != StringUtility.Undefined) {
+        //             GenerateCmdObj.Version = versionsMap.get(fwVersion);
+        //             if (GenerateCmdObj.FrameWork == FrameworkTypeEnum.NetStandard) {
+        //                 GenerateCmdObj.AppType = ProjectTypeEnum.Classlib;
+        //                 GenerateCmd.SlnFinder(GenerateCmdObj);
+        //             }
+        //             else {
+        //                 GenerateCmd.SelectApplicationType(GenerateCmdObj);
+        //             }
+        //         }
+        //     });
     }
 
     private static SelectApplicationType(GenerateCmdObj: GenerateCmdDTO) {
-        let applicationTypeMap: Map<string, string> = DataSource.GetApplicationTypes();
+        let applicationTypeMap: Map<string, string> = DataSource.GetApplicationTypes(GenerateCmdObj.Language);
+
         // Displays types of application.
         QuickPickUtility
             .ShowQuickPick(Array.from(applicationTypeMap.keys()), StringUtility.SelectAppType)
             .then(fwAppType => {
                 if (typeof fwAppType != StringUtility.Undefined) {
                     GenerateCmdObj.AppType = applicationTypeMap.get(fwAppType);
+                    // if(DataSource.GetOptionAppType().indexOf(GenerateCmdObj.AppType)!=-1){
+                    //     let optionsTypeMap:Map<string,string>=DataSource.GetOptions(GenerateCmdObj.AppType);
+                    //     QuickPickUtility
+                    //     .ShowQuickPick(Array.from(optionsTypeMap.keys()), StringUtility.SelectAppType)
+                    //     .then( option => {
+                    //         if(option){
+                    //             GenerateCmdObj.AppType=GenerateCmdObj.AppType+optionsTypeMap.get(option);
+                    //             GenerateCmd.SlnFinder(GenerateCmdObj);
+                    //         }
+                    //     });
+                    // }
+                    // else{
                     GenerateCmd.SlnFinder(GenerateCmdObj);
+                    //}
                 }
             });
     }
@@ -100,8 +134,6 @@ export class GenerateCmd {
 
         // Adding "Create New Solution" at last in the list.
         slnNPathList.set(StringUtility.CreateSln, StringUtility.CreateSln);
-
-        let slnNameList: string[] = Array.from(slnNPathList.keys());
 
         if (slnNPathList.size > 1) {
 

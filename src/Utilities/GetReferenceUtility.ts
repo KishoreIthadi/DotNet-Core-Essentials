@@ -1,3 +1,5 @@
+'use strict'
+
 import * as XMLMapping from 'xml-mapping';
 import * as fs from 'fs';
 

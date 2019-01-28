@@ -1,5 +1,4 @@
-import * as vscode from 'vscode';
-import * as fs from 'fs';
+'use strict';
 
 import { FileUtility } from '../Utilities/FileUtility';
 import { InputBoxUtility } from '../Utilities/InputBoxUtility';
@@ -10,10 +9,6 @@ import { ValidationUtility } from '../Utilities/ValidationUtility';
 
 import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
-
-import { ChildProcessUtility } from '../Utilities/ChildProcessUtility';
-import { CLITypeEnum } from '../Enums/CLITypeEnum';
-import { OutputChannelUtility } from '../Utilities/OutputChannelUtility';
 import { TerminalUtility } from '../Utilities/TerminalUtility';
 
 export class NugetPackageCmd {
@@ -46,7 +41,7 @@ export class NugetPackageCmd {
 
     public static ValidateProject(rootPath) {
         let csprojNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
-            FileTypeEnum.Csproj, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
 
         if (csprojNameNPathList.size > 0) {
             QuickPickUtility.ShowQuickPick(Array.from(csprojNameNPathList.keys()),
@@ -85,7 +80,7 @@ export class NugetPackageCmd {
             })
     }
 
-    public static RemovePackage(projectPath: string) {
-        // ToDO : 
-    }
+    // public static RemovePackage(projectPath: string) {
+    //     // ToDO : 
+    // }
 }

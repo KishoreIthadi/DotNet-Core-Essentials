@@ -1,3 +1,4 @@
+'use strict'
 export class AddReferenceDTO {
     public FileType: string;
     public SlnName: string;

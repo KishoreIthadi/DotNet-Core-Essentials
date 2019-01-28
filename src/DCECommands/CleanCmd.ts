@@ -1,3 +1,6 @@
+
+'use strict';
+
 import { FileUtility } from '../Utilities/FileUtility';
 import { MessageUtility } from '../Utilities/MessageUtility';
 import { QuickPickUtility } from '../Utilities/QuickPickUtility';
@@ -39,7 +42,7 @@ export class CleanCmd {
     public static ValidateProject(rootPath) {
 
         let csprojNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
-            FileTypeEnum.Csproj, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
 
         let slnNameNPathList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
             FileTypeEnum.SLN, new Map<string, string>());

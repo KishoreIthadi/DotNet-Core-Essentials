@@ -1,8 +1,5 @@
 'use strict'
 
-import * as vscode from 'vscode';
-import * as fs from 'fs';
-
 import { ChildProcessUtility } from '../Utilities/ChildProcessUtility';
 import { FileUtility } from '../Utilities/FileUtility';
 import { MessageUtility } from '../Utilities/MessageUtility';
@@ -14,8 +11,6 @@ import { GetReferenceUtility } from '../Utilities/GetReferenceUtility'
 import { CLITypeEnum } from '../Enums/CLITypeEnum';
 import { FileTypeEnum } from '../Enums/FileTypeEnum';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
-
-
 
 export class RemoveNugetPackage {
     public ExecuteRemoveNugetPackageCmd(args) {
@@ -49,7 +44,7 @@ export class RemoveNugetPackage {
 
     public static GetCsprojList(rootPath) {
         let csprojNameList: Map<string, string> = FileUtility.GetFilesbyExtension(rootPath,
-            FileTypeEnum.Csproj, new Map<string, string>());
+            FileTypeEnum.Proj, new Map<string, string>());
         QuickPickUtility.ShowQuickPick(Array.from(csprojNameList.keys()), StringUtility.SelectCsproj)
             .then(response => {
                 if (typeof response != StringUtility.Undefined) {
@@ -66,7 +61,7 @@ export class RemoveNugetPackage {
             QuickPickUtility.ShowQuickPick(Array.from(referredPackageList.keys()), StringUtility.SelectPackage)
                 .then(response => {
                     if (typeof response != StringUtility.Undefined) {
-                        let output = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet, ['remove', csprojPath, 'reference', referredPackageList.get(response)], rootPath);
+                        ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet, ['remove', csprojPath, 'reference', referredPackageList.get(response)], rootPath);
                         MessageUtility.ShowMessage(MessageTypeEnum.Info, StringUtility.FormatString(StringUtility.RemovePackageSuccess, response), [])
                     }
                 })

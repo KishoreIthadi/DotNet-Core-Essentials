@@ -1,10 +1,11 @@
+'use strict';
+
 import { AddReferenceDTO } from '../DTO/AddReferenceDTO';
 import { MessageUtility } from '../Utilities/MessageUtility';
 import { StringUtility } from '../Utilities/StringUtility';
 import { FileUtility } from '../Utilities/FileUtility';
 import { QuickPickUtility } from '../Utilities/QuickPickUtility';
 import { MessageTypeEnum } from '../Enums/MessageTypeEnum';
-import { UserOptionsEnum } from '../Enums/UserOptionsEnum';
 import { AddRefCmd } from './AddRefCmd';
 import { DataSource } from '../DataSource';
 import { FileTypeEnum } from '../Enums/FileTypeEnum';
@@ -29,7 +30,7 @@ export class AddProjectRef {
                         if (typeof slnName != StringUtility.Undefined) {
                             referenceDTO.Path = SolutionsList.get(slnName);
                             referenceDTO.SlnName = slnName;
-                            referenceDTO.FileType = FileTypeEnum.Csproj;
+                            referenceDTO.FileType = projName.substring(projName.lastIndexOf('.') + 1)
                             AddRefCmd.BrowseProject(referenceDTO, projName);
                         }
                     });
