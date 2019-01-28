@@ -18,7 +18,7 @@
 
 ### **What is DCE?**
 
-**Using this visual studio code extension you can create, debug, run and publish DotNet core/standard applications**
+**Using this visual studio code extension you can create, debug, run and publish DotNet core/standard applications in C#, VB & F# languages **
 
 ---
 

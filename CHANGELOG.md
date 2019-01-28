@@ -1,5 +1,15 @@
 # Dotnet Core Essentials Change Log
 
+## 0.0.6 - 2019-01-28
+
+### Bug Fixes
+
+- Fixed issue with startup project
+
+### Added
+
+- Added support for VB and F# languages
+
 ## 0.0.5 - 2018-05-25
 
 ### Bug Fixes
