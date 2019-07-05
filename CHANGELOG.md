@@ -1,5 +1,11 @@
 # Dotnet Core Essentials Change Log
 
+## 0.0.7 - 2019-07-22
+
+### Bug Fixes
+
+- Fixed issue with version validation >= 2
+
 ## 0.0.6 - 2019-01-28
 
 ### Bug Fixes
