@@ -21,7 +21,7 @@ export class ValidationUtility {
     // To check whether dotnet core 2.x sdk is installed.
     public static CheckDotnetCli(): boolean {
         let ls: any = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet, ['--version'], __dirname);
-        if (typeof ls.error != StringUtility.Undefined || Number(ls.stdout.toString().split('.')[0]) < 2) {
+        if (typeof ls.error != StringUtility.Undefined || !(/^[2]/g.test(ls.stdout.toString()))) {
             return false;
         }
         return true;
