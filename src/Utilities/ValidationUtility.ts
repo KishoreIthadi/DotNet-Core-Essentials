@@ -18,22 +18,21 @@ export class ValidationUtility {
         return /^[a-zA-Z0-9_. ]*$/.test(name) && !(DataSource.GetValidationList().indexOf(name) > -1);
     }
 
-    // To check whether dotnet core 2.x sdk is installed.
+    // To check whether dotnet core sdk installed is greater than or equals 2.x.
     public static CheckDotnetCli(): boolean {
-        let ls: any = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet, ['--version'], __dirname);
+       return this.CheckVersion(__dirname);
+    }
+    
+    private static CheckVersion(rootPath):boolean{
+        let ls: any = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet, ['--version'], rootPath);
         if (typeof ls.error != StringUtility.Undefined || Number(ls.stdout.toString().split('.')[0]) < 2) {
             return false;
         }
         return true;
     }
-
-    // To check whether dotnet cli is 2.x.
+    // To check whether dotnet cli is greater than or equals 2.x.
     public static CheckCliVersion(solutionPath): boolean {
-        let ls: any = ChildProcessUtility.RunChildProcess(CLITypeEnum.dotnet, ['--version'], solutionPath);
-        if (!(/^[2]/g.test(ls.stdout.toString()))) {
-            return false;
-        }
-        return true;
+        return this.CheckVersion(solutionPath);
     }
 
     // To return workspace Folders.
